@@ -35,6 +35,8 @@ const rods = [
   { id: "rainbow", name: "虹のつりざお", mark: "V", price: 3500, math: 20, power: 5, label: "さいこうレアの かぎ" },
 ];
 
+const rodAsset = (rodId) => `./assets/rods/rod_${rodId}.png`;
+
 const places = [
   { id: "pond", name: "はじまりの池", roma: 1, note: "みどりの こじま" },
   { id: "river", name: "キラキラ川", roma: 5, note: "ながれる ひかり" },
@@ -162,11 +164,14 @@ function currentHeroAsset() {
   return "./assets/characters/hero_lv01.png";
 }
 
+function penguinAsset(stageId) {
+  return `./assets/buddy_penguin/penguin_${stageId}.png`;
+}
+
 function renderPenguin(target, stageId, glow = false) {
-  target.className = `penguin ${stageId}${glow ? " glow" : ""}`;
-  target.innerHTML = stageId === "egg"
-    ? '<span class="egg-shine"></span>'
-    : '<span class="wing-left"></span><span class="wing-right"></span><span class="eye-left"></span><span class="eye-right"></span><span class="beak"></span><span class="hat"></span><span class="badge"></span>';
+  const homeClass = target.id === "home-buddy-copy" ? " penguin-home" : "";
+  target.className = `penguin-sprite ${stageId}${homeClass}${glow ? " glow" : ""}`;
+  target.innerHTML = `<img src="${penguinAsset(stageId)}" alt="" />`;
 }
 
 function renderAll() {
@@ -200,6 +205,8 @@ function renderHome() {
   if (heroAvatar) heroAvatar.src = currentHeroAsset();
   const homeBuddy = $("#home-buddy-copy");
   if (homeBuddy) renderPenguin(homeBuddy, buddy.id);
+  const activeRod = $("#active-rod-image");
+  if (activeRod) activeRod.src = rodAsset(save.equippedRod);
 }
 
 function renderTabs() {
@@ -285,7 +292,7 @@ function renderRods() {
         <p>${rod.price}コイン / さんすうLv${rod.math}</p>
         <span>${rod.label}</span>
       </div>
-      <div class="rod-preview" aria-hidden="true"><span class="rod-stick"></span><span class="rod-line-mini"></span><span class="rod-gem">${rod.mark}</span></div>
+      <div class="rod-preview" aria-hidden="true"><img src="${rodAsset(rod.id)}" alt="" /></div>
       <button class="${owned ? "secondary" : "primary"}" ${(!owned && !canBuy) || save.equippedRod === rod.id ? "disabled" : ""}>${actionLabel}</button>
     `;
     card.querySelector("button").addEventListener("click", () => buyOrEquipRod(rod));

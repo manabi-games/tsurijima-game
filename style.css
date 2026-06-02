@@ -473,18 +473,21 @@ h2 {
   position: relative;
   display: grid;
   place-items: center;
-  height: 280px;
+  height: 360px;
   margin: 12px 0;
   overflow: hidden;
   border-radius: 8px;
   background:
     linear-gradient(180deg, #9ddff7 0 32%, #44add1 32% 100%);
+  background-position: center;
+  background-size: cover;
 }
 
 .scene-backdrop {
   position: absolute;
   inset: 0;
   overflow: hidden;
+  display: none;
 }
 
 .scene-sun,
@@ -573,12 +576,14 @@ h2 {
 
 .water-scene.place-pond {
   background:
-    linear-gradient(180deg, #bfeeff 0 34%, #7ec857 34% 42%, #44add1 42% 100%);
+    linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,78,120,0.08)),
+    url("./assets/stages/stage_pond.webp") center / cover no-repeat;
 }
 
 .water-scene.place-river {
   background:
-    linear-gradient(180deg, #bfeeff 0 30%, #8fd879 30% 42%, #50c5e8 42% 100%);
+    linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,78,120,0.08)),
+    url("./assets/stages/stage_river.webp") center / cover no-repeat;
 }
 
 .water-scene.place-river .scene-rock {
@@ -587,14 +592,14 @@ h2 {
 
 .water-scene.place-coast {
   background:
-    linear-gradient(180deg, #8ee4ff 0 38%, #ffe2a0 38% 52%, #2f9ed1 52% 100%);
+    linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,78,120,0.08)),
+    url("./assets/stages/stage_coast.webp") center / cover no-repeat;
 }
 
 .water-scene.place-deep {
   background:
-    radial-gradient(circle at 24% 72%, rgba(139, 232, 255, 0.22), transparent 90px),
-    radial-gradient(circle at 78% 66%, rgba(255, 143, 179, 0.18), transparent 100px),
-    linear-gradient(180deg, #294d8f 0 24%, #12213f 24% 100%);
+    linear-gradient(180deg, rgba(0,20,54,0.04), rgba(0,10,32,0.18)),
+    url("./assets/stages/stage_deep.webp") center / cover no-repeat;
 }
 
 .water-scene.place-deep .scene-sun,
@@ -609,10 +614,8 @@ h2 {
 
 .water-scene.place-phantom {
   background:
-    radial-gradient(circle at 50% 22%, rgba(255, 255, 255, 0.72), transparent 74px),
-    linear-gradient(120deg, rgba(255, 107, 203, 0.44), transparent 32%),
-    linear-gradient(240deg, rgba(85, 188, 226, 0.52), transparent 38%),
-    linear-gradient(180deg, #dff8ff 0 38%, #6dcbe8 38% 100%);
+    linear-gradient(180deg, rgba(255,255,255,0.04), rgba(80,20,120,0.08)),
+    url("./assets/stages/stage_phantom.webp") center / cover no-repeat;
 }
 
 .water-scene.place-phantom .scene-isle {
@@ -628,33 +631,52 @@ h2 {
   position: absolute;
   left: 0;
   right: 0;
-  top: 34%;
-  height: 24px;
-  background: repeating-linear-gradient(90deg, rgba(255,255,255,0.5) 0 28px, transparent 28px 56px);
+  bottom: 0;
+  height: 42%;
+  background: linear-gradient(180deg, transparent, rgba(18, 93, 130, 0.12));
+  pointer-events: none;
 }
 
 .rod-line {
   position: absolute;
-  top: 12px;
-  left: 52%;
+  z-index: 4;
+  top: 42px;
+  left: 46%;
   width: 3px;
-  height: 118px;
-  background: #4a3727;
-  transform: rotate(12deg);
+  height: 170px;
+  background: rgba(255, 255, 255, 0.86);
+  transform: rotate(16deg);
   transform-origin: top;
+  box-shadow: 0 0 3px rgba(36, 52, 71, 0.42);
+}
+
+.active-rod-image {
+  position: absolute;
+  z-index: 3;
+  left: 8px;
+  top: 24px;
+  width: 240px;
+  height: 240px;
+  object-fit: contain;
+  transform: rotate(-11deg);
+  transform-origin: 18% 86%;
+  filter: drop-shadow(0 12px 12px rgba(36, 52, 71, 0.22));
+  pointer-events: none;
 }
 
 .catch-display {
   position: relative;
-  z-index: 1;
+  z-index: 5;
   display: grid;
   place-items: center;
-  width: 120px;
-  height: 88px;
+  width: 132px;
+  height: 98px;
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.82);
+  background: rgba(255, 255, 255, 0.88);
+  border: 2px solid rgba(255,255,255,0.82);
   font-size: 2rem;
   font-weight: 900;
+  box-shadow: 0 12px 24px rgba(36, 52, 71, 0.18);
 }
 
 .catch-display img {
@@ -688,63 +710,19 @@ h2 {
 
 .rod-preview {
   position: relative;
-  width: 96px;
-  height: 64px;
+  width: 108px;
+  height: 84px;
 }
 
-.rod-stick {
-  position: absolute;
-  left: 18px;
-  top: 31px;
-  width: 78px;
-  height: 8px;
-  border-radius: 999px;
-  background: var(--rod-main, #8b5a2b);
-  transform: rotate(-28deg);
-  transform-origin: left center;
-  box-shadow: inset 0 -2px rgba(0, 0, 0, 0.16);
+.rod-preview img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 9px rgba(36, 52, 71, 0.18));
 }
 
-.rod-line-mini {
-  position: absolute;
-  right: 9px;
-  top: 13px;
-  width: 2px;
-  height: 44px;
-  background: rgba(36, 52, 71, 0.32);
-}
-
-.rod-gem {
-  position: absolute;
-  left: 0;
-  bottom: 7px;
-  display: grid;
-  place-items: center;
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  background: var(--rod-accent, #f6c85f);
-  color: #243447;
-  font-size: 0.78rem;
-  box-shadow: 0 4px 0 rgba(36, 52, 71, 0.12);
-}
-
-.rod-wood { --rod-main: #8b5a2b; --rod-accent: #d7a85b; }
-.rod-silver { --rod-main: #b9c8d4; --rod-accent: #e6eef4; }
-.rod-gold { --rod-main: #f0b73e; --rod-accent: #ffd65a; }
-.rod-star { --rod-main: #4654ba; --rod-accent: #b9a7ff; }
-.rod-rainbow { --rod-main: linear-gradient(90deg, #ff6b6b, #ffd166, #4ecdc4, #5b8def); --rod-accent: #fff2bd; }
-
-.rod-star .rod-gem::before,
-.rod-rainbow .rod-gem::before {
-  content: "";
-  position: absolute;
-  inset: -7px;
-  border-radius: 50%;
-  border: 3px dashed rgba(246, 200, 95, 0.8);
-}
-
-.rod-rainbow .rod-preview {
+.rod-rainbow .rod-preview img {
   filter: drop-shadow(0 0 10px rgba(91, 141, 239, 0.42));
 }
 
@@ -821,6 +799,33 @@ h2 {
   width: 94px;
   height: 110px;
   margin: 0 auto 8px;
+}
+
+.penguin-sprite {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 150px;
+  height: 150px;
+  margin: 0 auto 8px;
+}
+
+.penguin-sprite img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 12px 12px rgba(36, 52, 71, 0.18));
+}
+
+.penguin-sprite.egg {
+  width: 136px;
+  height: 136px;
+}
+
+.penguin-sprite.king {
+  width: 170px;
+  height: 170px;
 }
 
 .penguin::before {
@@ -1433,13 +1438,13 @@ h1 {
   position: absolute;
   z-index: 1;
   left: 50%;
-  top: 32%;
+  top: 52%;
   width: 22px;
   height: 22px;
   border-radius: 50%;
   border: 4px solid #f6c85f;
   background: #ff6b6b;
-  box-shadow: 0 8px 0 rgba(36, 52, 71, 0.12);
+  box-shadow: 0 8px 0 rgba(36, 52, 71, 0.12), 0 0 12px rgba(255,255,255,0.62);
   transform: translateX(-50%);
 }
 
@@ -1643,10 +1648,15 @@ h1 {
   gap: 8px;
 }
 
-.hero-buddy-wrap .penguin {
+.hero-buddy-wrap .penguin,
+.hero-buddy-wrap .penguin-sprite {
   transform: scale(1.34);
   transform-origin: bottom center;
   margin-bottom: 18px;
+}
+
+.hero-buddy-wrap .penguin-sprite.king {
+  transform: scale(1.18);
 }
 
 .buddy-nameplate {
