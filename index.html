@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>つりじま すしレーン</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <main class="app">
+      <header class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">まなびで つよくなる</p>
+          <h1>つりじま すしレーン</h1>
+          <p id="hero-message">すしレーンの もんだいを といて、つりじまの さかなを あつめよう。</p>
+        </div>
+        <section class="buddy-stage" aria-label="あいぼう">
+          <div class="sky-dot"></div>
+          <div id="buddy-art" class="penguin egg" aria-hidden="true"></div>
+          <div>
+            <p class="mini-label">あいぼう</p>
+            <strong id="buddy-name">ころりんエッグ</strong>
+          </div>
+        </section>
+      </header>
+
+      <section class="wallet" aria-label="もちもの">
+        <div><span>コイン</span><strong id="coin-count">0</strong></div>
+        <div><span>チケット</span><strong id="ticket-count">0</strong></div>
+        <div><span>さかな</span><strong id="fish-count">0/40</strong></div>
+      </section>
+
+      <nav class="tabs" aria-label="メニュー">
+        <button class="tab is-active" data-view="home">ホーム</button>
+        <button class="tab" data-view="learn">まなぶ</button>
+        <button class="tab" data-view="fish">つり</button>
+        <button class="tab" data-view="shop">つりぐや</button>
+        <button class="tab" data-view="book">ずかん</button>
+      </nav>
+
+      <section id="home-view" class="view is-active">
+        <div class="home-grid">
+          <article class="panel stat-card" data-jump="learn" data-subject="math">
+            <p class="mini-label">さんすう</p>
+            <h2>Lv <span id="home-math-level">1</span></h2>
+            <div class="meter"><span id="math-meter"></span></div>
+            <p>コインと あいぼうが そだつよ。</p>
+          </article>
+          <article class="panel stat-card" data-jump="learn" data-subject="roma">
+            <p class="mini-label">ローマじ</p>
+            <h2>Lv <span id="home-roma-level">1</span></h2>
+            <div class="meter"><span id="roma-meter"></span></div>
+            <p>チケットと つりばが ふえるよ。</p>
+          </article>
+          <article class="panel">
+            <p class="mini-label">そうび</p>
+            <h2 id="home-rod">木のつりざお</h2>
+            <p id="home-place">いけるつりば: はじまりの池</p>
+          </article>
+        </div>
+        <div class="action-row">
+          <button class="primary" data-go="learn">まなびにいく</button>
+          <button class="secondary" data-go="fish">つりにいく</button>
+          <button class="secondary" data-go="shop">つりぐや</button>
+        </div>
+      </section>
+
+      <section id="learn-view" class="view">
+        <div class="subject-tabs">
+          <button class="subject-button is-active" data-subject="math">さんすう</button>
+          <button class="subject-button" data-subject="roma">ローマじ</button>
+        </div>
+        <div id="level-list" class="level-list" aria-label="れべる"></div>
+
+        <article class="panel quiz-panel">
+          <div class="quiz-top">
+            <div>
+              <p id="quiz-subject" class="mini-label">さんすう</p>
+              <h2 id="quiz-level">Lv 1</h2>
+            </div>
+            <strong id="quiz-score">0/5</strong>
+          </div>
+          <div id="sushi-lane" class="sushi-lane" aria-label="すしレーン"></div>
+          <div class="question-card">
+            <p id="question-guide" class="mini-label">こたえを いれてね</p>
+            <div id="question-text" class="question-text"></div>
+            <div id="answer-area" class="answer-area"></div>
+          </div>
+          <p id="feedback" class="feedback" aria-live="polite"></p>
+          <div class="action-row">
+            <button id="check-answer" class="primary">こたえる</button>
+            <button id="next-question" class="secondary" hidden>つぎへ</button>
+            <button id="retry-level" class="secondary" hidden>もういちど</button>
+          </div>
+        </article>
+      </section>
+
+      <section id="fish-view" class="view">
+        <article class="panel fishing-panel">
+          <div>
+            <p class="mini-label">つりば</p>
+            <h2 id="fish-place-name">はじまりの池</h2>
+          </div>
+          <div id="place-list" class="place-list"></div>
+          <div class="water-scene">
+            <div class="rod-line"></div>
+            <div id="catch-display" class="catch-display">?</div>
+          </div>
+          <p id="fish-message">チケットを 1まい つかって つれるよ。</p>
+          <button id="fish-button" class="primary">つる</button>
+        </article>
+      </section>
+
+      <section id="shop-view" class="view">
+        <article class="panel">
+          <div class="section-head">
+            <div>
+              <p class="mini-label">つりぐや</p>
+              <h2>つりざお</h2>
+            </div>
+            <p id="shop-message">さんすうを がんばると かえるよ。</p>
+          </div>
+          <div id="rod-list" class="rod-list"></div>
+        </article>
+      </section>
+
+      <section id="book-view" class="view">
+        <article class="panel">
+          <div class="section-head">
+            <div>
+              <p class="mini-label">さかなずかん</p>
+              <h2 id="book-title">0/40</h2>
+            </div>
+            <button id="reset-button" class="danger">さいしょから</button>
+          </div>
+          <div id="fish-book" class="fish-book"></div>
+        </article>
+      </section>
+    </main>
+
+    <div id="evolution-modal" class="modal" hidden>
+      <div class="modal-card evolution-card">
+        <p class="mini-label">あれ……？</p>
+        <div id="evolution-buddy" class="penguin egg glow"></div>
+        <h2 id="evolution-title">ようすが……！</h2>
+        <p id="evolution-text">あいぼうが ひかっている！</p>
+        <button id="close-evolution" class="primary">すすむ</button>
+      </div>
+    </div>
+
+    <div id="ending-modal" class="modal" hidden>
+      <div class="modal-card">
+        <p class="mini-label">つりじまマスター！</p>
+        <h2>ぜんぶの さかなを みつけた！</h2>
+        <p>すごい！きみは でんせつの つりめいじん！</p>
+        <button id="close-ending" class="primary">やったね</button>
+      </div>
+    </div>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
