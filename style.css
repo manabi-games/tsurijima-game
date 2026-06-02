@@ -458,7 +458,9 @@ h2 {
 }
 
 .place-button {
+  position: relative;
   padding: 10px;
+  padding-left: 48px;
   text-align: left;
 }
 
@@ -471,12 +473,154 @@ h2 {
   position: relative;
   display: grid;
   place-items: center;
-  height: 210px;
+  height: 280px;
   margin: 12px 0;
   overflow: hidden;
   border-radius: 8px;
   background:
     linear-gradient(180deg, #9ddff7 0 32%, #44add1 32% 100%);
+}
+
+.scene-backdrop {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.scene-sun,
+.scene-moon,
+.scene-rock,
+.scene-reef,
+.scene-isle,
+.place-chip {
+  position: absolute;
+  display: block;
+}
+
+.scene-sun {
+  right: 44px;
+  top: 26px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #ffd65a;
+  box-shadow: 0 0 0 12px rgba(255, 214, 90, 0.22);
+}
+
+.scene-moon {
+  display: none;
+  right: 58px;
+  top: 30px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #e8f5ff;
+  box-shadow: -12px 0 0 #4969c9, 0 0 18px rgba(232, 245, 255, 0.8);
+}
+
+.scene-rock {
+  bottom: 88px;
+  width: 96px;
+  height: 42px;
+  border-radius: 48% 52% 12px 12px;
+  background: #8c9aa8;
+}
+
+.rock-one { left: 26px; }
+.rock-two { right: 42px; transform: scale(0.72); }
+
+.scene-reef {
+  display: none;
+  bottom: 28px;
+  width: 80px;
+  height: 70px;
+  border-radius: 50% 50% 8px 8px;
+  background: #ff8fb3;
+  clip-path: polygon(45% 0, 62% 34%, 88% 8%, 72% 54%, 100% 72%, 62% 68%, 52% 100%, 40% 68%, 0 78%, 30% 54%, 12% 12%, 38% 34%);
+}
+
+.reef-one { left: 42px; }
+.reef-two { right: 56px; transform: scale(0.72); background: #8be8ff; }
+
+.scene-isle {
+  display: none;
+  left: 50%;
+  bottom: 92px;
+  width: 180px;
+  height: 88px;
+  border-radius: 50% 50% 10px 10px;
+  background: #d7a85b;
+  box-shadow: inset 0 18px #7ec857;
+  transform: translateX(-50%);
+}
+
+.place-chip {
+  left: 12px;
+  top: 50%;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  transform: translateY(-50%);
+  background: #55bce2;
+  box-shadow: inset 0 -5px rgba(36, 52, 71, 0.12);
+}
+
+.place-chip.pond { background: #7ec857; }
+.place-chip.river { background: linear-gradient(135deg, #8be8ff, #55bce2); }
+.place-chip.coast { background: linear-gradient(135deg, #ffd166, #55bce2); }
+.place-chip.deep { background: linear-gradient(135deg, #4969c9, #13294b); }
+.place-chip.phantom { background: linear-gradient(135deg, #ff6bcb, #ffd166, #55bce2); }
+
+.water-scene.place-pond {
+  background:
+    linear-gradient(180deg, #bfeeff 0 34%, #7ec857 34% 42%, #44add1 42% 100%);
+}
+
+.water-scene.place-river {
+  background:
+    linear-gradient(180deg, #bfeeff 0 30%, #8fd879 30% 42%, #50c5e8 42% 100%);
+}
+
+.water-scene.place-river .scene-rock {
+  background: #7b8b94;
+}
+
+.water-scene.place-coast {
+  background:
+    linear-gradient(180deg, #8ee4ff 0 38%, #ffe2a0 38% 52%, #2f9ed1 52% 100%);
+}
+
+.water-scene.place-deep {
+  background:
+    radial-gradient(circle at 24% 72%, rgba(139, 232, 255, 0.22), transparent 90px),
+    radial-gradient(circle at 78% 66%, rgba(255, 143, 179, 0.18), transparent 100px),
+    linear-gradient(180deg, #294d8f 0 24%, #12213f 24% 100%);
+}
+
+.water-scene.place-deep .scene-sun,
+.water-scene.place-deep .scene-rock {
+  display: none;
+}
+
+.water-scene.place-deep .scene-moon,
+.water-scene.place-deep .scene-reef {
+  display: block;
+}
+
+.water-scene.place-phantom {
+  background:
+    radial-gradient(circle at 50% 22%, rgba(255, 255, 255, 0.72), transparent 74px),
+    linear-gradient(120deg, rgba(255, 107, 203, 0.44), transparent 32%),
+    linear-gradient(240deg, rgba(85, 188, 226, 0.52), transparent 38%),
+    linear-gradient(180deg, #dff8ff 0 38%, #6dcbe8 38% 100%);
+}
+
+.water-scene.place-phantom .scene-isle {
+  display: block;
+}
+
+.water-scene.place-phantom .scene-rock {
+  display: none;
 }
 
 .water-scene::after {
@@ -520,7 +664,7 @@ h2 {
 
 .rod-card {
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: 1fr 108px auto;
   gap: 10px;
   align-items: center;
   padding: 12px;
@@ -531,8 +675,77 @@ h2 {
   margin: 0 0 5px;
 }
 
-.rod-card .rod-mark {
-  font-size: 2rem;
+.rod-card span {
+  color: var(--muted);
+  font-size: 0.86rem;
+  font-weight: 800;
+}
+
+.rod-card.is-equipped {
+  border-color: var(--green);
+  background: #effbf4;
+}
+
+.rod-preview {
+  position: relative;
+  width: 96px;
+  height: 64px;
+}
+
+.rod-stick {
+  position: absolute;
+  left: 18px;
+  top: 31px;
+  width: 78px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--rod-main, #8b5a2b);
+  transform: rotate(-28deg);
+  transform-origin: left center;
+  box-shadow: inset 0 -2px rgba(0, 0, 0, 0.16);
+}
+
+.rod-line-mini {
+  position: absolute;
+  right: 9px;
+  top: 13px;
+  width: 2px;
+  height: 44px;
+  background: rgba(36, 52, 71, 0.32);
+}
+
+.rod-gem {
+  position: absolute;
+  left: 0;
+  bottom: 7px;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--rod-accent, #f6c85f);
+  color: #243447;
+  font-size: 0.78rem;
+  box-shadow: 0 4px 0 rgba(36, 52, 71, 0.12);
+}
+
+.rod-wood { --rod-main: #8b5a2b; --rod-accent: #d7a85b; }
+.rod-silver { --rod-main: #b9c8d4; --rod-accent: #e6eef4; }
+.rod-gold { --rod-main: #f0b73e; --rod-accent: #ffd65a; }
+.rod-star { --rod-main: #4654ba; --rod-accent: #b9a7ff; }
+.rod-rainbow { --rod-main: linear-gradient(90deg, #ff6b6b, #ffd166, #4ecdc4, #5b8def); --rod-accent: #fff2bd; }
+
+.rod-star .rod-gem::before,
+.rod-rainbow .rod-gem::before {
+  content: "";
+  position: absolute;
+  inset: -7px;
+  border-radius: 50%;
+  border: 3px dashed rgba(246, 200, 95, 0.8);
+}
+
+.rod-rainbow .rod-preview {
+  filter: drop-shadow(0 0 10px rgba(91, 141, 239, 0.42));
 }
 
 .fish-book {
@@ -645,6 +858,18 @@ h2 {
   background: #ffe9a8;
 }
 
+.egg-shine {
+  position: absolute;
+  z-index: 2;
+  left: 34px;
+  top: 24px;
+  width: 18px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.62);
+  transform: rotate(22deg);
+}
+
 .penguin.chick { --penguin-body: #7cc7e6; }
 .penguin.cap { --penguin-body: #246d9f; }
 .penguin.pirate { --penguin-body: #2d3347; }
@@ -659,7 +884,10 @@ h2 {
 
 .penguin:not(.egg) .beak,
 .penguin:not(.egg) .eye-left,
-.penguin:not(.egg) .eye-right {
+.penguin:not(.egg) .eye-right,
+.penguin:not(.egg) .wing-left,
+.penguin:not(.egg) .wing-right,
+.penguin:not(.egg) .badge {
   position: absolute;
   z-index: 2;
 }
@@ -685,6 +913,34 @@ h2 {
 .penguin:not(.egg) .eye-left { left: 34px; }
 .penguin:not(.egg) .eye-right { right: 34px; }
 
+.penguin:not(.egg) .wing-left,
+.penguin:not(.egg) .wing-right {
+  top: 52px;
+  width: 22px;
+  height: 46px;
+  border-radius: 60% 30% 70% 35%;
+  background: var(--penguin-body, #26384d);
+  box-shadow: inset 0 -6px rgba(0, 0, 0, 0.08);
+}
+
+.penguin:not(.egg) .wing-left {
+  left: 5px;
+  transform: rotate(22deg);
+}
+
+.penguin:not(.egg) .wing-right {
+  right: 5px;
+  transform: rotate(-22deg);
+}
+
+.penguin.chick .wing-left,
+.penguin.chick .wing-right {
+  width: 18px;
+  height: 34px;
+  top: 60px;
+  background: #9de3f6;
+}
+
 .penguin.cap .hat,
 .penguin.pirate .hat,
 .penguin.king .hat {
@@ -698,10 +954,56 @@ h2 {
   background: var(--hat-color, #f6c85f);
 }
 
+.penguin.cap .hat::after {
+  content: "";
+  position: absolute;
+  left: 30px;
+  top: 11px;
+  width: 26px;
+  height: 7px;
+  border-radius: 999px;
+  background: #ffd65a;
+}
+
 .penguin.pirate .hat { --hat-color: #1e2430; }
+
+.penguin.pirate .hat::after {
+  content: "";
+  position: absolute;
+  left: 9px;
+  top: 5px;
+  width: 24px;
+  height: 8px;
+  border-radius: 999px;
+  background: #f4f0e6;
+}
+
+.penguin.pirate .badge {
+  left: 52px;
+  top: 60px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #e35c54;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.42);
+}
+
 .penguin.king .hat {
   --hat-color: #f6c85f;
   clip-path: polygon(0 100%, 0 35%, 22% 70%, 50% 8%, 78% 70%, 100% 35%, 100% 100%);
+}
+
+.penguin.king::before {
+  box-shadow: inset 0 -8px rgba(0, 0, 0, 0.08), 0 0 0 5px rgba(139, 232, 255, 0.22);
+}
+
+.penguin.king .badge {
+  left: 39px;
+  top: 80px;
+  width: 18px;
+  height: 22px;
+  border-radius: 8px;
+  background: linear-gradient(180deg, #fff, #8be8ff);
 }
 
 .glow {

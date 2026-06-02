@@ -28,19 +28,19 @@ const ticketReward = (level) => {
 };
 
 const rods = [
-  { id: "wood", name: "木のつりざお", mark: "I", price: 0, math: 1, power: 1 },
-  { id: "silver", name: "銀のつりざお", mark: "II", price: 300, math: 5, power: 2 },
-  { id: "gold", name: "金のつりざお", mark: "III", price: 800, math: 10, power: 3 },
-  { id: "star", name: "星のつりざお", mark: "IV", price: 1800, math: 15, power: 4 },
-  { id: "rainbow", name: "虹のつりざお", mark: "V", price: 3500, math: 20, power: 5 },
+  { id: "wood", name: "木のつりざお", mark: "I", price: 0, math: 1, power: 1, label: "はじめの つりざお" },
+  { id: "silver", name: "銀のつりざお", mark: "II", price: 300, math: 5, power: 2, label: "レアに すこし つよい" },
+  { id: "gold", name: "金のつりざお", mark: "III", price: 800, math: 10, power: 3, label: "でんせつを ねらえる" },
+  { id: "star", name: "星のつりざお", mark: "IV", price: 1800, math: 15, power: 4, label: "きらめく つよいさお" },
+  { id: "rainbow", name: "虹のつりざお", mark: "V", price: 3500, math: 20, power: 5, label: "さいこうレアの かぎ" },
 ];
 
 const places = [
-  { id: "pond", name: "はじまりの池", roma: 1 },
-  { id: "river", name: "キラキラ川", roma: 5 },
-  { id: "coast", name: "青空海岸", roma: 10 },
-  { id: "deep", name: "ふしぎ深海", roma: 15 },
-  { id: "phantom", name: "まぼろし島", roma: 20 },
+  { id: "pond", name: "はじまりの池", roma: 1, note: "みどりの こじま" },
+  { id: "river", name: "キラキラ川", roma: 5, note: "ながれる ひかり" },
+  { id: "coast", name: "青空海岸", roma: 10, note: "なみと すなはま" },
+  { id: "deep", name: "ふしぎ深海", roma: 15, note: "くらい うみのそこ" },
+  { id: "phantom", name: "まぼろし島", roma: 20, note: "にじの ひみつばしょ" },
 ];
 
 const buddyStages = [
@@ -164,7 +164,9 @@ function currentHeroAsset() {
 
 function renderPenguin(target, stageId, glow = false) {
   target.className = `penguin ${stageId}${glow ? " glow" : ""}`;
-  target.innerHTML = stageId === "egg" ? "" : '<span class="eye-left"></span><span class="eye-right"></span><span class="beak"></span><span class="hat"></span>';
+  target.innerHTML = stageId === "egg"
+    ? '<span class="egg-shine"></span>'
+    : '<span class="wing-left"></span><span class="wing-right"></span><span class="eye-left"></span><span class="eye-right"></span><span class="beak"></span><span class="hat"></span><span class="badge"></span>';
 }
 
 function renderAll() {
@@ -248,7 +250,7 @@ function renderPlaces() {
     const button = document.createElement("button");
     button.className = "place-button";
     button.classList.toggle("is-active", save.currentPlace === place.id);
-    button.innerHTML = `<strong>${place.name}</strong><br><span>ローマじ Lv${place.roma}</span>`;
+    button.innerHTML = `<span class="place-chip ${place.id}"></span><strong>${place.name}</strong><br><span>ローマじ Lv${place.roma} / ${place.note}</span>`;
     button.addEventListener("click", () => {
       save.currentPlace = place.id;
       persist();
@@ -259,7 +261,13 @@ function renderPlaces() {
   if (!unlockedPlaces().some((place) => place.id === save.currentPlace)) {
     save.currentPlace = unlockedPlaces().at(-1).id;
   }
-  $("#fish-place-name").textContent = places.find((place) => place.id === save.currentPlace).name;
+  const current = places.find((place) => place.id === save.currentPlace);
+  $("#fish-place-name").textContent = current.name;
+  const scene = $(".water-scene");
+  if (scene) {
+    scene.classList.remove(...places.map((place) => `place-${place.id}`));
+    scene.classList.add(`place-${current.id}`);
+  }
 }
 
 function renderRods() {
@@ -269,14 +277,15 @@ function renderRods() {
     const owned = save.ownedRods.includes(rod.id);
     const canBuy = save.coins >= rod.price && save.mathLevel >= rod.math;
     const card = document.createElement("div");
-    card.className = "rod-card";
+    card.className = `rod-card rod-${rod.id}${save.equippedRod === rod.id ? " is-equipped" : ""}${owned ? " is-owned" : ""}`;
     const actionLabel = owned ? (save.equippedRod === rod.id ? "そうび中" : "そうび") : "かう";
     card.innerHTML = `
       <div>
         <h3>${rod.name}</h3>
         <p>${rod.price}コイン / さんすうLv${rod.math}</p>
+        <span>${rod.label}</span>
       </div>
-      <div class="rod-mark">${rod.mark}</div>
+      <div class="rod-preview" aria-hidden="true"><span class="rod-stick"></span><span class="rod-line-mini"></span><span class="rod-gem">${rod.mark}</span></div>
       <button class="${owned ? "secondary" : "primary"}" ${(!owned && !canBuy) || save.equippedRod === rod.id ? "disabled" : ""}>${actionLabel}</button>
     `;
     card.querySelector("button").addEventListener("click", () => buyOrEquipRod(rod));
