@@ -117,6 +117,7 @@ let selectedLevel = 1;
 let quiz = null;
 let selectedChoice = "";
 let resetArmed = false;
+let fishingBusy = false;
 
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => [...document.querySelectorAll(selector)];
@@ -154,6 +155,13 @@ function getBuddyStage(mathLevel = save.mathLevel) {
   return buddyStages.filter((stage) => mathLevel >= stage.min).at(-1);
 }
 
+function currentHeroAsset() {
+  if (save.mathLevel >= 20) return "./assets/characters/hero_lv10.png";
+  if (save.mathLevel >= 15) return "./assets/characters/hero_lv09.png";
+  if (save.mathLevel >= 8) return "./assets/characters/hero_lv05.png";
+  return "./assets/characters/hero_lv01.png";
+}
+
 function renderPenguin(target, stageId, glow = false) {
   target.className = `penguin ${stageId}${glow ? " glow" : ""}`;
   target.innerHTML = stageId === "egg" ? "" : '<span class="eye-left"></span><span class="eye-right"></span><span class="beak"></span><span class="hat"></span>';
@@ -186,6 +194,10 @@ function renderHome() {
   const buddy = getBuddyStage();
   $("#buddy-name").textContent = buddy.name;
   renderPenguin($("#buddy-art"), buddy.id);
+  const heroAvatar = $("#hero-avatar");
+  if (heroAvatar) heroAvatar.src = currentHeroAsset();
+  const homeBuddy = $("#home-buddy-copy");
+  if (homeBuddy) renderPenguin(homeBuddy, buddy.id);
 }
 
 function renderTabs() {
@@ -218,7 +230,8 @@ function renderSushiLane() {
   const states = quiz?.plates || Array(QUESTIONS_PER_LEVEL).fill("");
   states.forEach((state, index) => {
     const plate = document.createElement("div");
-    plate.className = `sushi-plate ${plateClassByLevel(selectedLevel)} ${state}`;
+    const current = quiz && index === quiz.index && !state && !quiz.finished ? "current incoming" : "";
+    plate.className = `sushi-plate ${plateClassByLevel(selectedLevel)} ${state} ${current}`;
     plate.innerHTML = `<span>${index + 1}</span>`;
     lane.appendChild(plate);
   });
@@ -373,9 +386,7 @@ function renderQuestion() {
     input.inputMode = question.inputMode || "text";
     input.autocomplete = "off";
     input.enterKeyHint = "done";
-    input.addEventListener("keydown", (event) => {
-      if (event.key === "Enter") checkAnswer();
-    });
+    input.addEventListener("keydown", handleLearnEnter);
     area.appendChild(input);
     setTimeout(() => input.focus(), 0);
   }
@@ -384,6 +395,7 @@ function renderQuestion() {
 
 function checkAnswer() {
   if (!quiz || quiz.finished) return;
+  if (quiz.plates[quiz.index]) return;
   const question = quiz.questions[quiz.index];
   const rawAnswer = question.type === "choice" ? selectedChoice : $("#answer-input").value;
   const ok = normalize(rawAnswer) === normalize(question.answer);
@@ -402,6 +414,23 @@ function nextQuestion() {
   $("#next-question").hidden = true;
   $("#check-answer").hidden = false;
   renderQuestion();
+}
+
+function handleLearnEnter(event) {
+  if (event.key !== "Enter" || currentView !== "learn") return;
+  event.preventDefault();
+  event.stopPropagation();
+  if (!$("#next-question").hidden) {
+    nextQuestion();
+    return;
+  }
+  if (!$("#check-answer").hidden) {
+    checkAnswer();
+    return;
+  }
+  if (!$("#retry-level").hidden) {
+    startQuiz();
+  }
 }
 
 function finishQuiz() {
@@ -554,21 +583,48 @@ function selectSubject(subject) {
 }
 
 function fishOnce() {
+  if (fishingBusy) return;
   if (save.tickets <= 0) {
     $("#fish-message").textContent = "チケットが たりないよ。ローマじで あつめよう。";
     return;
   }
+  fishingBusy = true;
+  $("#fish-button").disabled = true;
   save.tickets -= 1;
   const caught = pickFish();
-  save.fish[caught.id] = (save.fish[caught.id] || 0) + 1;
-  $("#catch-display").innerHTML = fishArt(caught);
-  $("#fish-message").textContent = `${caught.name}を つった！`;
-  if (caughtFishCount() === fishList.length && !save.endingSeen) {
-    save.endingSeen = true;
-    $("#ending-modal").hidden = false;
-  }
+  const scene = $(".water-scene");
+  const display = $("#catch-display");
+  scene.classList.remove("is-caught");
+  scene.classList.add("is-casting");
+  display.classList.add("is-waiting");
+  display.innerHTML = "!";
+  $("#fish-message").textContent = "えいっ！うきを なげたよ。";
   persist();
   renderAll();
+
+  setTimeout(() => {
+    scene.classList.remove("is-casting");
+    scene.classList.add("is-biting");
+    display.innerHTML = "!!";
+    $("#fish-message").textContent = "ぴくぴく……なにか きた！";
+  }, 420);
+
+  setTimeout(() => {
+    scene.classList.remove("is-biting");
+    scene.classList.add("is-caught");
+    display.classList.remove("is-waiting");
+    display.innerHTML = fishArt(caught);
+    save.fish[caught.id] = (save.fish[caught.id] || 0) + 1;
+    $("#fish-message").textContent = `${caught.name}を つった！`;
+    if (caughtFishCount() === fishList.length && !save.endingSeen) {
+      save.endingSeen = true;
+      $("#ending-modal").hidden = false;
+    }
+    fishingBusy = false;
+    $("#fish-button").disabled = false;
+    persist();
+    renderAll();
+  }, 900);
 }
 
 function pickFish() {
@@ -644,6 +700,7 @@ function bindEvents() {
   $("#close-ending").addEventListener("click", () => {
     $("#ending-modal").hidden = true;
   });
+  document.addEventListener("keydown", handleLearnEnter);
 }
 
 bindEvents();

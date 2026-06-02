@@ -8,18 +8,27 @@
   </head>
   <body>
     <main class="app">
-      <header class="hero">
-        <div class="hero-copy">
+      <header class="hero hero-main">
+        <div class="title-banner">
           <p class="eyebrow">まなびで つよくなる</p>
           <h1>つりじま すしレーン</h1>
           <p id="hero-message">すしレーンの もんだいを といて、つりじまの さかなを あつめよう。</p>
         </div>
-        <section class="buddy-stage" aria-label="あいぼう">
-          <div class="sky-dot"></div>
-          <div id="buddy-art" class="penguin egg" aria-hidden="true"></div>
-          <div>
-            <p class="mini-label">あいぼう</p>
-            <strong id="buddy-name">ころりんエッグ</strong>
+        <section class="hero-stage" aria-label="しゅじんこうとあいぼう">
+          <div class="hero-sky">
+            <span class="sun"></span>
+            <span class="cloud one"></span>
+            <span class="cloud two"></span>
+          </div>
+          <div class="hero-island"></div>
+          <div class="hero-water"></div>
+          <img id="hero-avatar" class="hero-avatar" src="./assets/characters/hero_lv01.png" alt="しゅじんこう" />
+          <div class="hero-buddy-wrap">
+            <div id="buddy-art" class="penguin egg" aria-hidden="true"></div>
+            <div class="buddy-nameplate">
+              <p class="mini-label">あいぼう</p>
+              <strong id="buddy-name">ころりんエッグ</strong>
+            </div>
           </div>
         </section>
       </header>
@@ -39,60 +48,105 @@
       </nav>
 
       <section id="home-view" class="view is-active">
-        <div class="home-grid">
-          <article class="panel stat-card" data-jump="learn" data-subject="math">
-            <p class="mini-label">さんすう</p>
-            <h2>Lv <span id="home-math-level">1</span></h2>
-            <div class="meter"><span id="math-meter"></span></div>
-            <p>コインと あいぼうが そだつよ。</p>
-          </article>
-          <article class="panel stat-card" data-jump="learn" data-subject="roma">
-            <p class="mini-label">ローマじ</p>
-            <h2>Lv <span id="home-roma-level">1</span></h2>
-            <div class="meter"><span id="roma-meter"></span></div>
-            <p>チケットと つりばが ふえるよ。</p>
-          </article>
-          <article class="panel">
-            <p class="mini-label">そうび</p>
-            <h2 id="home-rod">木のつりざお</h2>
-            <p id="home-place">いけるつりば: はじまりの池</p>
-          </article>
-        </div>
-        <div class="action-row">
-          <button class="primary" data-go="learn">まなびにいく</button>
-          <button class="secondary" data-go="fish">つりにいく</button>
-          <button class="secondary" data-go="shop">つりぐや</button>
+        <div class="island-dashboard">
+          <aside class="panel dashboard-side">
+            <p class="mini-label">きょうの じょうたい</p>
+            <article class="stat-card compact" data-jump="learn" data-subject="math">
+              <div>
+                <span class="stat-icon">+</span>
+                <strong>さんすう Lv <span id="home-math-level">1</span></strong>
+              </div>
+              <div class="meter"><span id="math-meter"></span></div>
+              <p>コインと あいぼう</p>
+            </article>
+            <article class="stat-card compact" data-jump="learn" data-subject="roma">
+              <div>
+                <span class="stat-icon">A</span>
+                <strong>ローマじ Lv <span id="home-roma-level">1</span></strong>
+              </div>
+              <div class="meter"><span id="roma-meter"></span></div>
+              <p>チケットと つりば</p>
+            </article>
+            <article class="gear-card">
+              <p class="mini-label">そうび</p>
+              <h2 id="home-rod">木のつりざお</h2>
+              <p id="home-place">いけるつりば: はじまりの池</p>
+            </article>
+          </aside>
+
+          <section class="main-island panel" aria-label="つりじま">
+            <div class="island-sky">
+              <span class="sun"></span>
+              <span class="cloud one"></span>
+              <span class="cloud two"></span>
+            </div>
+            <div class="island-scene">
+              <div id="home-buddy-copy" class="penguin-home"></div>
+              <div class="dock"></div>
+              <div class="island-ground"></div>
+              <div class="sea-band"></div>
+            </div>
+            <div class="island-caption">
+              <p class="mini-label">つぎの もくひょう</p>
+              <h2>まなんで、つって、ずかんを うめよう</h2>
+            </div>
+          </section>
+
+          <aside class="panel next-panel">
+            <p class="mini-label">おすすめ</p>
+            <h2>まずは 1レベル</h2>
+            <p>さんすうで コイン、ローマじで チケット。どちらも すすめると レアなさかなに ちかづくよ。</p>
+            <div class="goal-list">
+              <div><span>1</span> まなぶ</div>
+              <div><span>2</span> つりぐや</div>
+              <div><span>3</span> つりにいく</div>
+            </div>
+            <div class="action-row vertical">
+              <button class="primary" data-go="learn">まなびにいく</button>
+              <button class="secondary" data-go="fish">つりにいく</button>
+              <button class="secondary" data-go="shop">つりぐや</button>
+            </div>
+          </aside>
         </div>
       </section>
 
       <section id="learn-view" class="view">
-        <div class="subject-tabs">
-          <button class="subject-button is-active" data-subject="math">さんすう</button>
-          <button class="subject-button" data-subject="roma">ローマじ</button>
-        </div>
-        <div id="level-list" class="level-list" aria-label="れべる"></div>
-
-        <article class="panel quiz-panel">
-          <div class="quiz-top">
-            <div>
-              <p id="quiz-subject" class="mini-label">さんすう</p>
-              <h2 id="quiz-level">Lv 1</h2>
+        <div class="learn-shell">
+          <aside class="panel learn-menu">
+            <p class="mini-label">まなぶもの</p>
+            <div class="subject-tabs">
+              <button class="subject-button is-active" data-subject="math">さんすう</button>
+              <button class="subject-button" data-subject="roma">ローマじ</button>
             </div>
-            <strong id="quiz-score">0/5</strong>
-          </div>
-          <div id="sushi-lane" class="sushi-lane" aria-label="すしレーン"></div>
-          <div class="question-card">
-            <p id="question-guide" class="mini-label">こたえを いれてね</p>
-            <div id="question-text" class="question-text"></div>
-            <div id="answer-area" class="answer-area"></div>
-          </div>
-          <p id="feedback" class="feedback" aria-live="polite"></p>
-          <div class="action-row">
-            <button id="check-answer" class="primary">こたえる</button>
-            <button id="next-question" class="secondary" hidden>つぎへ</button>
-            <button id="retry-level" class="secondary" hidden>もういちど</button>
-          </div>
-        </article>
+            <p class="mini-label level-label">れべる</p>
+            <div id="level-list" class="level-list" aria-label="れべる"></div>
+          </aside>
+
+          <article class="panel quiz-panel">
+            <div class="quiz-top">
+              <div>
+                <p id="quiz-subject" class="mini-label">さんすう</p>
+                <h2 id="quiz-level">Lv 1</h2>
+              </div>
+              <strong id="quiz-score">0/5</strong>
+            </div>
+            <div class="sushi-counter">
+              <div class="lane-light"></div>
+              <div id="sushi-lane" class="sushi-lane" aria-label="すしレーン"></div>
+            </div>
+            <div class="question-card">
+              <p id="question-guide" class="mini-label">こたえを いれてね</p>
+              <div id="question-text" class="question-text"></div>
+              <div id="answer-area" class="answer-area"></div>
+            </div>
+            <p id="feedback" class="feedback" aria-live="polite"></p>
+            <div class="action-row">
+              <button id="check-answer" class="primary">こたえる</button>
+              <button id="next-question" class="secondary" hidden>つぎへ</button>
+              <button id="retry-level" class="secondary" hidden>もういちど</button>
+            </div>
+          </article>
+        </div>
       </section>
 
       <section id="fish-view" class="view">
