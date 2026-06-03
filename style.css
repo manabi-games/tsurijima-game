@@ -1730,7 +1730,7 @@ h1 {
   gap: 2px;
   align-items: center;
   min-height: 176px;
-  padding: 28px 260px 24px;
+  padding: 24px 300px 22px;
   overflow: hidden;
   border: 3px solid rgba(76, 150, 178, 0.22);
   border-radius: 8px;
@@ -1746,11 +1746,13 @@ h1 {
 }
 
 .title-banner h1 {
+  display: grid;
+  gap: 2px;
   margin: 0;
   text-align: center;
   color: #ffe45d;
-  font-size: clamp(2.2rem, 4.45vw, 3.9rem);
-  line-height: 1;
+  font-size: clamp(1.95rem, 3.7vw, 3.25rem);
+  line-height: 0.96;
   text-shadow:
     0 4px 0 #0b548a,
     0 -2px 0 #fff,
@@ -1759,34 +1761,8 @@ h1 {
     0 9px 12px rgba(54, 52, 24, 0.32);
 }
 
-.title-banner .eyebrow,
-.title-banner p {
-  margin: 0;
-}
-
-.title-banner .eyebrow {
-  position: absolute;
-  left: 48%;
-  top: 34px;
-  padding: 4px 12px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.72);
-  color: #22765b;
-  transform: translateX(-50%);
-}
-
-.title-banner #hero-message {
-  position: absolute;
-  left: 50%;
-  bottom: 27px;
-  max-width: none;
-  padding: 5px 14px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.74);
-  color: #28566f;
-  font-weight: 800;
-  text-align: center;
-  transform: translateX(-50%);
+.title-banner h1 span {
+  display: block;
 }
 
 .hero-stage {
@@ -1854,13 +1830,32 @@ h1 {
   text-align: center;
 }
 
-.hero-rod-image {
+.hero-rod-card {
   position: absolute;
   z-index: 4;
-  left: 34%;
-  bottom: 96px;
-  width: 150px;
-  height: 150px;
+  left: 9%;
+  bottom: 108px;
+  display: grid;
+  place-items: center;
+  width: 178px;
+  min-height: 174px;
+  padding: 10px 10px 14px;
+  border: 2px solid rgba(36, 52, 71, 0.14);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.86);
+  box-shadow: 0 10px 16px rgba(36, 52, 71, 0.16);
+}
+
+.hero-rod-card .mini-label {
+  margin: 0 0 4px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: rgba(255, 242, 218, 0.95);
+}
+
+.hero-rod-image {
+  width: 132px;
+  height: 132px;
   object-fit: contain;
   transform: rotate(-14deg);
   transform-origin: 20% 88%;
@@ -1882,24 +1877,12 @@ h1 {
 
   .title-banner {
     min-height: 150px;
-    padding: 26px 28px 24px;
+    padding: 24px 90px 22px;
     background-position: center;
   }
 
   .title-banner h1 {
-    font-size: clamp(1.62rem, 8.2vw, 2.55rem);
-  }
-
-  .title-banner .eyebrow {
-    top: 14px;
-    left: 50%;
-    font-size: 0.74rem;
-  }
-
-  .title-banner #hero-message {
-    bottom: 12px;
-    width: min(92%, 420px);
-    font-size: 0.72rem;
+    font-size: clamp(1.4rem, 6.6vw, 2.05rem);
   }
 
   .hero,
@@ -1984,6 +1967,23 @@ h1 {
   .penguin-home {
     left: 30%;
     transform: scale(1.18);
+  }
+
+  .hero-rod-card {
+    left: 4%;
+    bottom: 104px;
+    width: 112px;
+    min-height: 124px;
+    padding: 8px;
+  }
+
+  .hero-rod-card .mini-label {
+    font-size: 0.68rem;
+  }
+
+  .hero-rod-image {
+    width: 86px;
+    height: 86px;
   }
 
   .place-list,

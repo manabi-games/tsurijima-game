@@ -28,21 +28,21 @@ const ticketReward = (level) => {
 };
 
 const rods = [
-  { id: "wood", name: "木のつりざお", mark: "I", price: 0, math: 1, power: 1, label: "はじめの つりざお" },
-  { id: "silver", name: "銀のつりざお", mark: "II", price: 300, math: 5, power: 2, label: "レアに すこし つよい" },
-  { id: "gold", name: "金のつりざお", mark: "III", price: 800, math: 10, power: 3, label: "でんせつを ねらえる" },
-  { id: "star", name: "星のつりざお", mark: "IV", price: 1800, math: 15, power: 4, label: "きらめく つよいさお" },
-  { id: "rainbow", name: "虹のつりざお", mark: "V", price: 3500, math: 20, power: 5, label: "さいこうレアの かぎ" },
+  { id: "wood", name: "きのつりざお", mark: "I", price: 0, math: 1, power: 1, label: "はじめの つりざお" },
+  { id: "silver", name: "ぎんのつりざお", mark: "II", price: 300, math: 5, power: 2, label: "レアに すこし つよい" },
+  { id: "gold", name: "きんのつりざお", mark: "III", price: 800, math: 10, power: 3, label: "でんせつを ねらえる" },
+  { id: "star", name: "ほしのつりざお", mark: "IV", price: 1800, math: 15, power: 4, label: "きらめく つよいさお" },
+  { id: "rainbow", name: "にじのつりざお", mark: "V", price: 3500, math: 20, power: 5, label: "さいこうレアの かぎ" },
 ];
 
 const rodAsset = (rodId) => `./assets/rods/rod_${rodId}.png`;
 
 const places = [
-  { id: "pond", name: "はじまりの池", roma: 1, note: "みどりの こじま" },
-  { id: "river", name: "キラキラ川", roma: 5, note: "ながれる ひかり" },
-  { id: "coast", name: "青空海岸", roma: 10, note: "なみと すなはま" },
-  { id: "deep", name: "ふしぎ深海", roma: 15, note: "くらい うみのそこ" },
-  { id: "phantom", name: "まぼろし島", roma: 20, note: "にじの ひみつばしょ" },
+  { id: "pond", name: "はじまりのいけ", roma: 1, note: "みどりの こじま" },
+  { id: "river", name: "きらきらがわ", roma: 5, note: "ながれる ひかり" },
+  { id: "coast", name: "あおぞらかいがん", roma: 10, note: "なみと すなはま" },
+  { id: "deep", name: "ふしぎしんかい", roma: 15, note: "くらい うみのそこ" },
+  { id: "phantom", name: "まぼろしじま", roma: 20, note: "にじの ひみつばしょ" },
 ];
 
 const buddyStages = [
@@ -293,7 +293,7 @@ function renderRods() {
     const canBuy = save.coins >= rod.price && save.mathLevel >= rod.math;
     const card = document.createElement("div");
     card.className = `rod-card rod-${rod.id}${save.equippedRod === rod.id ? " is-equipped" : ""}${owned ? " is-owned" : ""}`;
-    const actionLabel = owned ? (save.equippedRod === rod.id ? "そうび中" : "そうび") : "かう";
+    const actionLabel = owned ? (save.equippedRod === rod.id ? "そうびちゅう" : "そうび") : "かう";
     card.innerHTML = `
       <div>
         <h3>${rod.name}</h3>

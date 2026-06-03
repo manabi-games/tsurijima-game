@@ -10,9 +10,7 @@
     <main class="app">
       <header class="hero hero-main">
         <div class="title-banner">
-          <p class="eyebrow">まなびで つよくなる</p>
-          <h1>ペンペンとふしぎなつりじま</h1>
-          <p id="hero-message">すしレーンの もんだいを といて、つりじまの さかなを あつめよう。</p>
+          <h1><span>ペンペンと</span><span>ふしぎなつりじま</span></h1>
         </div>
         <section class="hero-stage" aria-label="しゅじんこうとあいぼう">
           <div class="hero-sky">
@@ -22,7 +20,10 @@
           </div>
           <div class="hero-island"></div>
           <div class="hero-water"></div>
-          <img id="hero-rod-image" class="hero-rod-image" src="./assets/rods/rod_wood.png" alt="" />
+          <div class="hero-rod-card">
+            <p class="mini-label">いまのつりざお</p>
+            <img id="hero-rod-image" class="hero-rod-image" src="./assets/rods/rod_wood.png" alt="" />
+          </div>
           <img id="hero-avatar" class="hero-avatar" src="./assets/characters/hero_lv01.png" alt="しゅじんこう" />
           <div class="hero-buddy-wrap">
             <div id="buddy-art" class="penguin egg" aria-hidden="true"></div>
@@ -70,8 +71,8 @@
             </article>
             <article class="gear-card">
               <p class="mini-label">そうび</p>
-              <h2 id="home-rod">木のつりざお</h2>
-              <p id="home-place">いけるつりば: はじまりの池</p>
+              <h2 id="home-rod">きのつりざお</h2>
+              <p id="home-place">いけるつりば: はじまりのいけ</p>
             </article>
           </aside>
 
@@ -169,7 +170,7 @@
         <article class="panel fishing-panel">
           <div>
             <p class="mini-label">つりば</p>
-            <h2 id="fish-place-name">はじまりの池</h2>
+            <h2 id="fish-place-name">はじまりのいけ</h2>
           </div>
           <div id="place-list" class="place-list"></div>
           <div class="water-scene">
