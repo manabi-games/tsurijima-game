@@ -1749,7 +1749,7 @@ h1 {
   margin: 0;
   text-align: center;
   color: #ffe45d;
-  font-size: clamp(2.45rem, 5.2vw, 4.45rem);
+  font-size: clamp(2.2rem, 4.45vw, 3.9rem);
   line-height: 1;
   text-shadow:
     0 4px 0 #0b548a,
@@ -1887,7 +1887,7 @@ h1 {
   }
 
   .title-banner h1 {
-    font-size: clamp(2.05rem, 10vw, 3rem);
+    font-size: clamp(1.62rem, 8.2vw, 2.55rem);
   }
 
   .title-banner .eyebrow {
