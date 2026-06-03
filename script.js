@@ -120,6 +120,9 @@ let quiz = null;
 let selectedChoice = "";
 let resetArmed = false;
 let fishingBusy = false;
+let fishingSession = null;
+let pendingPlaceUnlock = null;
+let pendingEvolutionStage = null;
 
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => [...document.querySelectorAll(selector)];
@@ -158,9 +161,6 @@ function getBuddyStage(mathLevel = save.mathLevel) {
 }
 
 function currentHeroAsset() {
-  if (save.mathLevel >= 20) return "./assets/characters/hero_lv10.png";
-  if (save.mathLevel >= 15) return "./assets/characters/hero_lv09.png";
-  if (save.mathLevel >= 8) return "./assets/characters/hero_lv05.png";
   return "./assets/characters/hero_lv01.png";
 }
 
@@ -451,6 +451,10 @@ function checkAnswer() {
   if (quiz.plates[quiz.index]) return;
   const question = quiz.questions[quiz.index];
   const rawAnswer = question.type === "choice" ? selectedChoice : $("#answer-input").value;
+  if (normalize(rawAnswer) === "") {
+    $("#feedback").textContent = "こたえを にゅうりょくしてね。";
+    return;
+  }
   const answers = question.answers || [question.answer];
   const ok = answers.some((answer) => normalize(rawAnswer) === normalize(answer));
   quiz.plates[quiz.index] = ok ? "done" : "miss";
@@ -502,6 +506,13 @@ function handleLearnEnter(event) {
   }
 }
 
+function handleFishEnter(event) {
+  if (event.key !== "Enter" || currentView !== "fish") return;
+  event.preventDefault();
+  event.stopPropagation();
+  fishOnce();
+}
+
 function finishQuiz() {
   quiz.finished = true;
   $("#quiz-score").textContent = `${quiz.correct}/5`;
@@ -534,8 +545,9 @@ function finishMath() {
     save.coins += reward;
     completedLevel("math", quiz.level);
     $("#feedback").textContent = `ぜんぶできた！${reward}コイン もらったよ。`;
+    showClearModal("さんすう", quiz.level, `${reward}コイン もらったよ。`);
     const after = getBuddyStage().id;
-    if (before !== after) showEvolution(after);
+    if (before !== after) pendingEvolutionStage = after;
   } else if (quiz.correct > 0) {
     const small = Math.max(5, Math.floor(mathReward(quiz.level) * 0.15));
     save.coins += small;
@@ -548,15 +560,31 @@ function finishMath() {
 function finishRoma() {
   if (quiz.correct === QUESTIONS_PER_LEVEL) {
     const reward = ticketReward(quiz.level);
+    const beforePlaces = unlockedPlaces().length;
     save.tickets += reward;
     completedLevel("roma", quiz.level);
     $("#feedback").textContent = `ぜんぶできた！チケット ${reward}まい もらったよ。`;
+    showClearModal("ローマじ", quiz.level, `チケット ${reward}まい もらったよ。`);
+    pendingPlaceUnlock = unlockedPlaces()[beforePlaces] || null;
   } else if (quiz.correct > 0) {
     save.tickets += 1;
     $("#feedback").textContent = `${quiz.correct}もん できた！チケット 1まい もらったよ。`;
   } else {
     $("#feedback").textContent = "チケットは つぎの おたのしみ。";
   }
+}
+
+function showClearModal(subjectLabel, level, rewardText) {
+  $("#clear-subject").textContent = `${subjectLabel} クリア！`;
+  $("#clear-title").textContent = `${subjectLabel} レベル ${level} クリア！`;
+  $("#clear-text").textContent = rewardText;
+  $("#clear-modal").hidden = false;
+}
+
+function showPlaceUnlock(place) {
+  $("#place-unlock-title").textContent = `${place.name}に いけるよ！`;
+  $("#place-unlock-text").textContent = "あたらしい さかなが まっているよ。";
+  $("#place-modal").hidden = false;
 }
 
 function normalize(value) {
@@ -599,13 +627,13 @@ const mathBank = [
   [[12, "+", 5], [14, "+", 3], [16, "+", 2], [11, "+", 8], [15, "+", 4]],
   [[21, "+", 13], [32, "+", 14], [25, "+", 22], [41, "+", 18], [53, "+", 16]],
   [[28, "+", 17], [36, "+", 25], [47, "+", 18], [59, "+", 24], [64, "+", 27]],
-  [[12, "-", 2], [14, "-", 3], [18, "-", 5], [19, "-", 7], [16, "-", 4]],
-  [[13, "-", 5], [15, "-", 7], [14, "-", 8], [16, "-", 9], [12, "-", 6]],
+  [[22, "+", 11], [31, "+", 12], [24, "+", 13], [42, "+", 15], [53, "+", 14]],
+  [[26, "+", 13], [35, "+", 12], [43, "+", 16], [51, "+", 18], [62, "+", 15]],
   [[23, "+", 18], [34, "+", 27], [45, "+", 36], [56, "+", 28], [67, "+", 19]],
-  [[34, "-", 12], [48, "-", 23], [57, "-", 31], [69, "-", 24], [86, "-", 45]],
-  [[42, "-", 17], [53, "-", 28], [61, "-", 35], [74, "-", 46], [82, "-", 59]],
-  [[90, "-", 34], [81, "-", 27], [73, "-", 48], [65, "-", 39], [92, "-", 58]],
-  [[96, "-", 68], [84, "-", 57], [75, "-", 49], [63, "-", 38], [91, "-", 76]],
+  [[28, "+", 36], [39, "+", 25], [47, "+", 34], [58, "+", 29], [66, "+", 27]],
+  [[32, "+", 49], [48, "+", 37], [55, "+", 28], [64, "+", 19], [73, "+", 18]],
+  [[46, "+", 38], [57, "+", 29], [68, "+", 24], [75, "+", 17], [86, "+", 13]],
+  [[59, "+", 28], [67, "+", 25], [74, "+", 19], [83, "+", 16], [88, "+", 11]],
   [[87, "-", 49], [92, "-", 58], [74, "-", 37], [81, "-", 46], [95, "-", 67]],
 ];
 
@@ -681,6 +709,7 @@ function buildRomajiAnswers(answer, aliases = []) {
       }
     }
   }
+  addNnVariants(answers);
   return [...answers];
 }
 
@@ -688,6 +717,12 @@ function addAnswerVariant(answers, value) {
   if (answers.has(value)) return false;
   answers.add(value);
   return true;
+}
+
+function addNnVariants(answers) {
+  for (const item of [...answers]) {
+    answers.add(item.replace(/n(?=$|[bcdfghjklmpqrstvwxz])/g, "nn"));
+  }
 }
 
 function goTo(view) {
@@ -702,6 +737,10 @@ function selectSubject(subject) {
 }
 
 function fishOnce() {
+  if (fishingSession?.ready) {
+    reelFish();
+    return;
+  }
   if (fishingBusy) return;
   if (save.tickets <= 0) {
     $("#fish-message").textContent = "チケットが たりないよ。ローマじで あつめよう。";
@@ -711,9 +750,15 @@ function fishOnce() {
   $("#fish-button").disabled = true;
   save.tickets -= 1;
   const caught = pickFish();
+  fishingSession = {
+    caught,
+    pulls: 0,
+    needed: pullsNeeded(caught),
+    ready: false,
+  };
   const scene = $(".water-scene");
   const display = $("#catch-display");
-  scene.classList.remove("is-caught");
+  scene.classList.remove("is-caught", "is-reeling");
   scene.classList.add("is-casting");
   display.classList.add("is-waiting");
   display.innerHTML = "!";
@@ -725,28 +770,57 @@ function fishOnce() {
     scene.classList.remove("is-casting");
     scene.classList.add("is-biting");
     display.innerHTML = "!!";
-    $("#fish-message").textContent = "ぴくぴく……なにか きた！";
-  }, 420);
-
-  setTimeout(() => {
-    scene.classList.remove("is-biting");
-    scene.classList.add("is-caught");
-    display.classList.remove("is-waiting");
-    display.innerHTML = fishArt(caught);
-    const isNew = !save.fish[caught.id];
-    save.fish[caught.id] = (save.fish[caught.id] || 0) + 1;
-    $("#fish-message").textContent = isNew
-      ? `はじめての ${caught.name}！ずかんに のった！`
-      : `${caught.name}を つった！ ${save.fish[caught.id]}ひきめ`;
-    if (caughtFishCount() === fishList.length && !save.endingSeen) {
-      save.endingSeen = true;
-      $("#ending-modal").hidden = false;
-    }
-    fishingBusy = false;
+    fishingSession.ready = true;
     $("#fish-button").disabled = false;
-    persist();
-    renderAll();
-  }, 900);
+    $("#fish-button").textContent = "ひっぱる！";
+    $("#fish-message").textContent = `ぴくぴく……${fishingSession.needed}かい ひっぱろう！`;
+  }, 420);
+}
+
+function reelFish() {
+  if (!fishingSession) return;
+  const scene = $(".water-scene");
+  const display = $("#catch-display");
+  fishingSession.pulls += 1;
+  scene.classList.remove("is-reeling");
+  void scene.offsetWidth;
+  scene.classList.add("is-reeling");
+  const remaining = fishingSession.needed - fishingSession.pulls;
+  if (remaining > 0) {
+    display.innerHTML = "!".repeat(Math.min(3, fishingSession.pulls + 1));
+    $("#fish-message").textContent = `ぐぐっ！あと ${remaining}かい！`;
+    return;
+  }
+  finishFishingCatch();
+}
+
+function finishFishingCatch() {
+  const caught = fishingSession.caught;
+  const scene = $(".water-scene");
+  const display = $("#catch-display");
+  scene.classList.remove("is-biting", "is-reeling");
+  scene.classList.add("is-caught");
+  display.classList.remove("is-waiting");
+  display.innerHTML = fishArt(caught);
+  const isNew = !save.fish[caught.id];
+  save.fish[caught.id] = (save.fish[caught.id] || 0) + 1;
+  $("#fish-message").textContent = isNew
+    ? `はじめての ${caught.name}！ずかんに のった！`
+    : `${caught.name}を つった！ ${save.fish[caught.id]}ひきめ`;
+  if (caughtFishCount() === fishList.length && !save.endingSeen) {
+    save.endingSeen = true;
+    $("#ending-modal").hidden = false;
+  }
+  fishingSession = null;
+  fishingBusy = false;
+  $("#fish-button").disabled = false;
+  $("#fish-button").textContent = "つる";
+  persist();
+  renderAll();
+}
+
+function pullsNeeded(item) {
+  return { normal: 1, rare: 2, legend: 3, mythic: 4 }[item.rarity] || 1;
 }
 
 function pickFish() {
@@ -797,6 +871,10 @@ function resetGame() {
     return;
   }
   save = defaultSave();
+  fishingBusy = false;
+  fishingSession = null;
+  pendingPlaceUnlock = null;
+  pendingEvolutionStage = null;
   persist();
   resetArmed = false;
   startQuiz();
@@ -820,10 +898,26 @@ function bindEvents() {
     $("#evolution-modal").hidden = true;
     renderAll();
   });
+  $("#close-clear").addEventListener("click", () => {
+    $("#clear-modal").hidden = true;
+    if (pendingEvolutionStage) {
+      const stageId = pendingEvolutionStage;
+      pendingEvolutionStage = null;
+      showEvolution(stageId);
+    } else if (pendingPlaceUnlock) {
+      const place = pendingPlaceUnlock;
+      pendingPlaceUnlock = null;
+      showPlaceUnlock(place);
+    }
+  });
+  $("#close-place").addEventListener("click", () => {
+    $("#place-modal").hidden = true;
+  });
   $("#close-ending").addEventListener("click", () => {
     $("#ending-modal").hidden = true;
   });
   document.addEventListener("keydown", handleLearnEnter);
+  document.addEventListener("keydown", handleFishEnter);
 }
 
 bindEvents();

@@ -1213,6 +1213,33 @@ h2 {
   box-shadow: 0 24px 70px rgba(0, 0, 0, 0.28);
 }
 
+.clear-card,
+.place-unlock-card {
+  border: 4px solid #fff;
+  background:
+    radial-gradient(circle at 20% 18%, rgba(255, 255, 255, 0.94), transparent 22%),
+    linear-gradient(180deg, #fff8d8, #e2f8ff);
+  animation: modalCelebrate 520ms ease-out both;
+}
+
+.clear-card h2,
+.place-unlock-card h2 {
+  color: #176b9c;
+  font-size: 2rem;
+  text-shadow: 0 3px 0 rgba(246, 200, 95, 0.42);
+}
+
+.clear-card::before,
+.place-unlock-card::before {
+  content: "★ ★ ★";
+  display: block;
+  margin-bottom: 8px;
+  color: #f6c85f;
+  font-size: 2rem;
+  letter-spacing: 0.18em;
+  animation: starTwinkle 780ms ease-in-out infinite alternate;
+}
+
 /* PC-first layout refresh */
 body {
   background:
@@ -1730,6 +1757,14 @@ h1 {
   animation: wavePulse 0.24s ease-in-out infinite alternate;
 }
 
+.water-scene.is-reeling .active-rod-image {
+  animation: rodPull 0.22s ease-out;
+}
+
+.water-scene.is-reeling::before {
+  animation: floatPull 0.22s ease-out;
+}
+
 .water-scene.is-caught .catch-display {
   animation: catchPop 0.36s ease-out both;
 }
@@ -1745,6 +1780,29 @@ h1 {
 @keyframes castRod {
   from { transform: rotate(-28deg); }
   to { transform: rotate(12deg); }
+}
+
+@keyframes modalCelebrate {
+  from { opacity: 0; transform: translateY(18px) scale(0.9); }
+  70% { opacity: 1; transform: translateY(-3px) scale(1.04); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes starTwinkle {
+  from { transform: scale(0.96); opacity: 0.72; }
+  to { transform: scale(1.06); opacity: 1; }
+}
+
+@keyframes rodPull {
+  from { transform: rotate(-18deg) translateY(0); }
+  55% { transform: rotate(-34deg) translateY(-10px); }
+  to { transform: rotate(-14deg) translateY(0); }
+}
+
+@keyframes floatPull {
+  from { transform: translateX(-50%) scale(1); }
+  55% { transform: translateX(-50%) translateY(-18px) scale(1.28); }
+  to { transform: translateX(-50%) scale(1); }
 }
 
 @keyframes floatCast {
