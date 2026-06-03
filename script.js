@@ -494,6 +494,7 @@ function handleLearnEnter(event) {
   if (event.key !== "Enter" || currentView !== "learn") return;
   event.preventDefault();
   event.stopPropagation();
+  if (closeTopModalByEnter()) return;
   if (!$("#next-question").hidden) {
     nextQuestion();
     return;
@@ -511,6 +512,7 @@ function handleFishEnter(event) {
   if (event.key !== "Enter" || currentView !== "fish") return;
   event.preventDefault();
   event.stopPropagation();
+  if (closeTopModalByEnter()) return;
   fishOnce();
 }
 
@@ -580,12 +582,49 @@ function showClearModal(subjectLabel, level, rewardText) {
   $("#clear-title").textContent = `${subjectLabel} レベル ${level} クリア！`;
   $("#clear-text").textContent = rewardText;
   $("#clear-modal").hidden = false;
+  setTimeout(() => $("#close-clear").focus(), 0);
 }
 
 function showPlaceUnlock(place) {
   $("#place-unlock-title").textContent = `${place.name}に いけるよ！`;
   $("#place-unlock-text").textContent = "あたらしい さかなが まっているよ。";
   $("#place-modal").hidden = false;
+  setTimeout(() => $("#close-place").focus(), 0);
+}
+
+function closeClearModal() {
+  $("#clear-modal").hidden = true;
+  if (pendingEvolutionStage) {
+    const stageId = pendingEvolutionStage;
+    pendingEvolutionStage = null;
+    showEvolution(stageId);
+  } else if (pendingPlaceUnlock) {
+    const place = pendingPlaceUnlock;
+    pendingPlaceUnlock = null;
+    showPlaceUnlock(place);
+  }
+  renderAll();
+}
+
+function closeTopModalByEnter() {
+  if (!$("#clear-modal").hidden) {
+    closeClearModal();
+    return true;
+  }
+  if (!$("#place-modal").hidden) {
+    $("#place-modal").hidden = true;
+    return true;
+  }
+  if (!$("#evolution-modal").hidden) {
+    $("#evolution-modal").hidden = true;
+    renderAll();
+    return true;
+  }
+  if (!$("#ending-modal").hidden) {
+    $("#ending-modal").hidden = true;
+    return true;
+  }
+  return false;
 }
 
 function normalize(value) {
@@ -899,18 +938,7 @@ function bindEvents() {
     $("#evolution-modal").hidden = true;
     renderAll();
   });
-  $("#close-clear").addEventListener("click", () => {
-    $("#clear-modal").hidden = true;
-    if (pendingEvolutionStage) {
-      const stageId = pendingEvolutionStage;
-      pendingEvolutionStage = null;
-      showEvolution(stageId);
-    } else if (pendingPlaceUnlock) {
-      const place = pendingPlaceUnlock;
-      pendingPlaceUnlock = null;
-      showPlaceUnlock(place);
-    }
-  });
+  $("#close-clear").addEventListener("click", closeClearModal);
   $("#close-place").addEventListener("click", () => {
     $("#place-modal").hidden = true;
   });

@@ -1896,6 +1896,27 @@ h1 {
     0 11px 13px rgba(49, 64, 77, 0.28);
 }
 
+.title-logo {
+  display: block;
+  width: min(650px, 58vw);
+  max-height: 136px;
+  margin: 0 auto;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 8px rgba(30, 72, 102, 0.22));
+}
+
+.title-text-fallback {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 .title-banner h1 span {
   display: block;
 }
@@ -2021,6 +2042,11 @@ h1 {
 .app.is-play-view .title-banner h1 {
   font-size: clamp(1.45rem, 2.45vw, 2.1rem);
   line-height: 0.92;
+}
+
+.app.is-play-view .title-logo {
+  width: min(420px, 42vw);
+  max-height: 82px;
 }
 
 .app.is-play-view .hero-stage {
