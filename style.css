@@ -1727,17 +1727,17 @@ h1 {
   position: relative;
   display: grid;
   grid-template-columns: 1fr;
-  gap: 4px;
+  gap: 2px;
   align-items: center;
-  min-height: 104px;
-  padding: 16px 30px 14px;
+  min-height: 176px;
+  padding: 28px 260px 24px;
   overflow: hidden;
   border: 3px solid rgba(76, 150, 178, 0.22);
   border-radius: 8px;
   background:
-    linear-gradient(90deg, rgba(255, 248, 216, 0.98), rgba(255, 255, 255, 0.95), rgba(219, 246, 255, 0.96)),
-    #fff;
-  box-shadow: 0 14px 0 rgba(54, 95, 118, 0.08), 0 20px 32px rgba(54, 95, 118, 0.13);
+    linear-gradient(90deg, rgba(7, 75, 125, 0.18), transparent 20% 80%, rgba(7, 75, 125, 0.18)),
+    url("./assets/ui/title_banner_tsurijima.webp") center / cover no-repeat;
+  box-shadow: 0 14px 0 rgba(54, 95, 118, 0.1), 0 22px 34px rgba(54, 95, 118, 0.2);
 }
 
 .title-banner::before,
@@ -1748,7 +1748,15 @@ h1 {
 .title-banner h1 {
   margin: 0;
   text-align: center;
-  font-size: clamp(2.3rem, 4.8vw, 4rem);
+  color: #ffe45d;
+  font-size: clamp(2.45rem, 5.2vw, 4.45rem);
+  line-height: 1;
+  text-shadow:
+    0 4px 0 #0b548a,
+    0 -2px 0 #fff,
+    2px 0 0 #fff,
+    -2px 0 0 #fff,
+    0 9px 12px rgba(54, 52, 24, 0.32);
 }
 
 .title-banner .eyebrow,
@@ -1758,16 +1766,27 @@ h1 {
 
 .title-banner .eyebrow {
   position: absolute;
-  left: 30px;
-  top: 14px;
+  left: 48%;
+  top: 34px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.72);
+  color: #22765b;
+  transform: translateX(-50%);
 }
 
 .title-banner #hero-message {
-  position: static;
+  position: absolute;
+  left: 50%;
+  bottom: 27px;
   max-width: none;
-  color: var(--muted);
+  padding: 5px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.74);
+  color: #28566f;
   font-weight: 800;
   text-align: center;
+  transform: translateX(-50%);
 }
 
 .hero-stage {
@@ -1859,6 +1878,28 @@ h1 {
     width: min(100% - 16px, 520px);
     padding-top: 8px;
     padding-bottom: 92px;
+  }
+
+  .title-banner {
+    min-height: 150px;
+    padding: 26px 28px 24px;
+    background-position: center;
+  }
+
+  .title-banner h1 {
+    font-size: clamp(2.05rem, 10vw, 3rem);
+  }
+
+  .title-banner .eyebrow {
+    top: 14px;
+    left: 50%;
+    font-size: 0.74rem;
+  }
+
+  .title-banner #hero-message {
+    bottom: 12px;
+    width: min(92%, 420px);
+    font-size: 0.72rem;
   }
 
   .hero,
