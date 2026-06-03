@@ -50,7 +50,7 @@ button:disabled {
 .app {
   width: min(980px, calc(100% - 22px));
   margin: 0 auto;
-  padding: 12px 0 92px;
+  padding: 8px 0 72px;
 }
 
 .hero {
@@ -131,13 +131,13 @@ h2 {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1px;
-  margin: 12px 0;
+  margin: 8px 0;
   overflow: hidden;
   border-radius: 8px;
 }
 
 .wallet div {
-  padding: 12px 10px;
+  padding: 9px 10px;
   background: rgba(255, 255, 255, 0.8);
   text-align: center;
 }
@@ -152,7 +152,7 @@ h2 {
 .wallet strong {
   display: block;
   margin-top: 3px;
-  font-size: 1.45rem;
+  font-size: 1.32rem;
 }
 
 .tabs {
@@ -1296,8 +1296,8 @@ h1 {
   right: auto;
   bottom: auto;
   gap: 10px;
-  margin: 14px 0;
-  padding: 8px;
+  margin: 8px 0;
+  padding: 6px;
   border: 2px solid rgba(76, 150, 178, 0.22);
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.82);
@@ -1305,7 +1305,7 @@ h1 {
 }
 
 .tab {
-  min-height: 52px;
+  min-height: 46px;
   border: 2px solid transparent;
   box-shadow: 0 4px 0 rgba(36, 52, 71, 0.11);
 }
@@ -1609,8 +1609,8 @@ h1 {
 
 .learn-shell {
   display: grid;
-  grid-template-columns: 260px minmax(0, 1fr);
-  gap: 16px;
+  grid-template-columns: 300px minmax(0, 1fr);
+  gap: 12px;
   align-items: start;
 }
 
@@ -1625,17 +1625,18 @@ h1 {
 }
 
 .level-label {
-  margin-top: 18px;
+  margin-top: 12px;
 }
 
 .learn-menu .level-list {
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
 }
 
 .sushi-counter {
   position: relative;
-  margin: 14px 0;
-  padding: 16px 16px 26px;
+  margin: 10px 0;
+  padding: 12px 14px 18px;
   overflow: hidden;
   border: 3px solid #a8d8e8;
   border-radius: 8px;
@@ -1652,9 +1653,9 @@ h1 {
 }
 
 .sushi-counter .sushi-lane {
-  gap: 12px;
+  gap: 10px;
   margin: 0;
-  padding: 14px;
+  padding: 10px;
   background:
     repeating-linear-gradient(90deg, rgba(36, 52, 71, 0.1) 0 22px, transparent 22px 44px),
     #b8dce8;
@@ -1675,7 +1676,7 @@ h1 {
 }
 
 .sushi-counter .sushi-plate {
-  min-height: 72px;
+  min-height: 58px;
   box-shadow: inset 0 -6px rgba(36, 52, 71, 0.08), 0 8px 0 rgba(36, 52, 71, 0.08);
 }
 
@@ -1709,16 +1710,16 @@ h1 {
 }
 
 .quiz-panel .question-card {
-  padding: 18px;
+  padding: 14px;
   border: 3px solid var(--line);
 }
 
 .quiz-panel .question-text {
-  min-height: 112px;
+  min-height: 82px;
 }
 
 .quiz-panel .answer-area input {
-  min-height: 62px;
+  min-height: 54px;
   border-width: 3px;
 }
 
@@ -1863,8 +1864,8 @@ h1 {
   grid-template-columns: 1fr;
   gap: 2px;
   align-items: center;
-  min-height: 176px;
-  padding: 24px 300px 22px;
+  min-height: 144px;
+  padding: 18px 270px 18px;
   overflow: hidden;
   border: 3px solid rgba(76, 150, 178, 0.22);
   border-radius: 8px;
@@ -1881,27 +1882,36 @@ h1 {
 
 .title-banner h1 {
   display: grid;
-  gap: 2px;
+  gap: 0;
   margin: 0;
   text-align: center;
-  color: #ffe45d;
-  font-size: clamp(1.95rem, 3.7vw, 3.25rem);
-  line-height: 0.96;
+  font-size: clamp(1.85rem, 3.2vw, 2.9rem);
+  line-height: 0.95;
+  letter-spacing: 0;
+  paint-order: stroke fill;
+  -webkit-text-stroke: 2px #fff8d8;
   text-shadow:
-    0 4px 0 #0b548a,
-    0 -2px 0 #fff,
-    2px 0 0 #fff,
-    -2px 0 0 #fff,
-    0 9px 12px rgba(54, 52, 24, 0.32);
+    0 4px 0 #0a6fa4,
+    0 7px 0 #084c7c,
+    0 11px 13px rgba(49, 64, 77, 0.28);
 }
 
 .title-banner h1 span {
   display: block;
 }
 
+.title-banner h1 span:first-child {
+  color: #ffe457;
+}
+
+.title-banner h1 span:last-child {
+  color: #76e8ff;
+}
+
 .hero-stage {
   position: relative;
-  min-height: 430px;
+  height: clamp(330px, 36vw, 380px);
+  min-height: 330px;
   overflow: hidden;
   border: 3px solid rgba(76, 150, 178, 0.22);
   border-radius: 8px;
@@ -1925,34 +1935,35 @@ h1 {
 .hero-avatar {
   position: absolute;
   z-index: 3;
-  left: 48%;
-  bottom: 22px;
-  width: min(300px, 25vw);
-  max-height: 360px;
+  left: 44%;
+  bottom: 16px;
+  width: min(258px, 22vw);
+  max-height: 325px;
   object-fit: contain;
-  transform: translateX(-72%);
+  transform: translateX(-50%);
   filter: drop-shadow(0 14px 14px rgba(36, 52, 71, 0.18));
 }
 
 .hero-buddy-wrap {
   position: absolute;
   z-index: 4;
-  left: 57%;
-  bottom: 78px;
+  left: 66%;
+  bottom: 58px;
   display: grid;
   place-items: center;
   gap: 8px;
+  transform: translateX(-50%);
 }
 
 .hero-buddy-wrap .penguin,
 .hero-buddy-wrap .penguin-sprite {
-  transform: scale(1.18);
+  transform: scale(1.08);
   transform-origin: bottom center;
-  margin-bottom: 18px;
+  margin-bottom: 12px;
 }
 
 .hero-buddy-wrap .penguin-sprite.king {
-  transform: scale(1.04);
+  transform: scale(0.98);
 }
 
 .buddy-nameplate {
@@ -1967,12 +1978,12 @@ h1 {
 .hero-rod-card {
   position: absolute;
   z-index: 4;
-  left: 9%;
-  bottom: 108px;
+  left: 22%;
+  bottom: 62px;
   display: grid;
   place-items: center;
-  width: 178px;
-  min-height: 174px;
+  width: 154px;
+  min-height: 150px;
   padding: 10px 10px 14px;
   border: 2px solid rgba(36, 52, 71, 0.14);
   border-radius: 8px;
@@ -1988,13 +1999,84 @@ h1 {
 }
 
 .hero-rod-image {
-  width: 132px;
-  height: 132px;
+  width: 112px;
+  height: 112px;
   object-fit: contain;
   transform: rotate(-14deg);
   transform-origin: 20% 88%;
   filter: drop-shadow(0 12px 12px rgba(36, 52, 71, 0.22));
   pointer-events: none;
+}
+
+.app.is-play-view .hero-main {
+  gap: 6px;
+}
+
+.app.is-play-view .title-banner {
+  min-height: 96px;
+  padding: 10px 250px;
+  background-position: center 48%;
+}
+
+.app.is-play-view .title-banner h1 {
+  font-size: clamp(1.45rem, 2.45vw, 2.1rem);
+  line-height: 0.92;
+}
+
+.app.is-play-view .hero-stage {
+  display: none;
+}
+
+.app.is-play-view .wallet {
+  margin: 6px 0;
+}
+
+.app.is-play-view .panel {
+  margin-top: 8px;
+  padding: 12px;
+}
+
+.app.is-play-view .learn-menu {
+  top: 68px;
+}
+
+.app.is-play-view .sushi-counter {
+  margin: 8px 0;
+  padding-bottom: 14px;
+}
+
+.app.is-play-view .sushi-master-stage {
+  min-height: 160px;
+}
+
+.app.is-play-view .sushi-chef {
+  width: min(210px, 38%);
+  max-height: 156px;
+}
+
+.app.is-play-view .chef-counter {
+  width: min(230px, 42%);
+  height: 68px;
+  bottom: 12px;
+}
+
+.app.is-play-view .served-plate {
+  width: 78px;
+  height: 46px;
+}
+
+.app.is-play-view .feedback {
+  min-height: 22px;
+  margin-top: 6px;
+}
+
+.app.is-play-view .action-row {
+  margin-top: 8px;
+}
+
+.app.is-play-view .water-scene {
+  height: min(360px, calc(100vh - 315px));
+  min-height: 300px;
 }
 
 @media (max-width: 720px) {

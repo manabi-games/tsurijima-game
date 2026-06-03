@@ -218,6 +218,7 @@ function renderHome() {
 }
 
 function renderTabs() {
+  $(".app").classList.toggle("is-play-view", currentView !== "home");
   $$(".tab").forEach((tab) => tab.classList.toggle("is-active", tab.dataset.view === currentView));
   $$(".view").forEach((view) => view.classList.toggle("is-active", view.id === `${currentView}-view`));
 }
