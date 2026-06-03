@@ -839,8 +839,8 @@ h2 {
   z-index: 5;
   display: grid;
   place-items: center;
-  width: 132px;
-  height: 98px;
+  width: 260px;
+  height: 190px;
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.88);
   border: 2px solid rgba(255,255,255,0.82);
@@ -850,8 +850,8 @@ h2 {
 }
 
 .catch-display img {
-  max-width: 110px;
-  max-height: 76px;
+  max-width: 230px;
+  max-height: 164px;
 }
 
 .rod-card {
@@ -2118,6 +2118,16 @@ h1 {
   .hero-rod-image {
     width: 86px;
     height: 86px;
+  }
+
+  .catch-display {
+    width: 190px;
+    height: 140px;
+  }
+
+  .catch-display img {
+    max-width: 170px;
+    max-height: 118px;
   }
 
   .place-list,
