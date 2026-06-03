@@ -188,7 +188,7 @@ function renderAll() {
 function renderWallet() {
   $("#coin-count").textContent = save.coins;
   $("#ticket-count").textContent = save.tickets;
-  $("#fish-count").textContent = `${caughtFishCount()}/40`;
+  $("#fish-count").textContent = `${caughtFishCount()}/${fishList.length}`;
 }
 
 function renderHome() {
@@ -200,7 +200,7 @@ function renderHome() {
   $("#home-place").textContent = `いけるつりば: ${unlockedPlaces().at(-1).name}`;
   $("#summary-math").textContent = `Lv ${save.mathLevel}`;
   $("#summary-roma").textContent = `Lv ${save.romaLevel}`;
-  $("#summary-book").textContent = `${caughtFishCount()}/40`;
+  $("#summary-book").textContent = `${caughtFishCount()}/${fishList.length}`;
   $("#next-math-goal").textContent = save.mathLevel >= MAX_LEVEL ? "さんすう Lv20 とうたつ！" : `さんすう Lv${save.mathLevel} をクリア`;
   $("#next-roma-goal").textContent = save.romaLevel >= MAX_LEVEL ? "ローマじ Lv20 とうたつ！" : `ローマじ Lv${save.romaLevel} をクリア`;
   $("#next-book-goal").textContent = caughtFishCount() >= fishList.length ? "ずかん コンプリート！" : `あと ${fishList.length - caughtFishCount()}しゅるい`;
@@ -310,7 +310,7 @@ function renderRods() {
 
 function renderBook() {
   const count = caughtFishCount();
-  $("#book-title").textContent = `${count}/40`;
+  $("#book-title").textContent = `${count}/${fishList.length}`;
   const book = $("#fish-book");
   book.innerHTML = "";
   fishList.forEach((item) => {
@@ -636,8 +636,11 @@ function fishOnce() {
     scene.classList.add("is-caught");
     display.classList.remove("is-waiting");
     display.innerHTML = fishArt(caught);
+    const isNew = !save.fish[caught.id];
     save.fish[caught.id] = (save.fish[caught.id] || 0) + 1;
-    $("#fish-message").textContent = `${caught.name}を つった！`;
+    $("#fish-message").textContent = isNew
+      ? `はじめての ${caught.name}！ずかんに のった！`
+      : `${caught.name}を つった！ ${save.fish[caught.id]}ひきめ`;
     if (caughtFishCount() === fishList.length && !save.endingSeen) {
       save.endingSeen = true;
       $("#ending-modal").hidden = false;
@@ -672,8 +675,9 @@ function allowedByRod(item, rod) {
 function fishWeight(item, rod) {
   const base = { normal: 70, rare: 18, legend: 7, mythic: 4 }[item.rarity];
   const rodBonus = { normal: 0, rare: rod.power * 4, legend: Math.max(0, rod.power - 2) * 5, mythic: rod.power >= 5 ? 8 : 0 }[item.rarity];
-  const newBonus = save.fish[item.id] ? 0 : 8;
-  return base + rodBonus + newBonus;
+  const newBonus = save.fish[item.id] ? 0 : 18;
+  const duplicatePenalty = Math.min(save.fish[item.id] || 0, 8) * 3;
+  return Math.max(4, base + rodBonus + newBonus - duplicatePenalty);
 }
 
 function showEvolution(stageId) {
