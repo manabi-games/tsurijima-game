@@ -198,6 +198,12 @@ function renderHome() {
   $("#roma-meter").style.width = `${(save.romaLevel / MAX_LEVEL) * 100}%`;
   $("#home-rod").textContent = rods.find((rod) => rod.id === save.equippedRod).name;
   $("#home-place").textContent = `いけるつりば: ${unlockedPlaces().at(-1).name}`;
+  $("#summary-math").textContent = `Lv ${save.mathLevel}`;
+  $("#summary-roma").textContent = `Lv ${save.romaLevel}`;
+  $("#summary-book").textContent = `${caughtFishCount()}/40`;
+  $("#next-math-goal").textContent = save.mathLevel >= MAX_LEVEL ? "さんすう Lv20 とうたつ！" : `さんすう Lv${save.mathLevel} をクリア`;
+  $("#next-roma-goal").textContent = save.romaLevel >= MAX_LEVEL ? "ローマじ Lv20 とうたつ！" : `ローマじ Lv${save.romaLevel} をクリア`;
+  $("#next-book-goal").textContent = caughtFishCount() >= fishList.length ? "ずかん コンプリート！" : `あと ${fishList.length - caughtFishCount()}しゅるい`;
   const buddy = getBuddyStage();
   $("#buddy-name").textContent = buddy.name;
   renderPenguin($("#buddy-art"), buddy.id);
@@ -207,6 +213,8 @@ function renderHome() {
   if (homeBuddy) renderPenguin(homeBuddy, buddy.id);
   const activeRod = $("#active-rod-image");
   if (activeRod) activeRod.src = rodAsset(save.equippedRod);
+  const heroRod = $("#hero-rod-image");
+  if (heroRod) heroRod.src = rodAsset(save.equippedRod);
 }
 
 function renderTabs() {

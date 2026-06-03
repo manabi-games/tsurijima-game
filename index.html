@@ -22,6 +22,7 @@
           </div>
           <div class="hero-island"></div>
           <div class="hero-water"></div>
+          <img id="hero-rod-image" class="hero-rod-image" src="./assets/rods/rod_wood.png" alt="" />
           <img id="hero-avatar" class="hero-avatar" src="./assets/characters/hero_lv01.png" alt="しゅじんこう" />
           <div class="hero-buddy-wrap">
             <div id="buddy-art" class="penguin egg" aria-hidden="true"></div>
@@ -75,20 +76,29 @@
           </aside>
 
           <section class="main-island panel" aria-label="つりじま">
-            <div class="island-sky">
-              <span class="sun"></span>
-              <span class="cloud one"></span>
-              <span class="cloud two"></span>
+            <p class="mini-label">つりじまノート</p>
+            <h2>いまの もくひょう</h2>
+            <div class="quest-board">
+              <article>
+                <span>1</span>
+                <strong id="next-math-goal">さんすうを すすめよう</strong>
+                <p>コインを あつめて つりざおを ふやそう。</p>
+              </article>
+              <article>
+                <span>2</span>
+                <strong id="next-roma-goal">ローマじを すすめよう</strong>
+                <p>チケットと あたらしい つりばを ふやそう。</p>
+              </article>
+              <article>
+                <span>3</span>
+                <strong id="next-book-goal">さかなを あつめよう</strong>
+                <p>ずかんコンプリートで つりじまマスター。</p>
+              </article>
             </div>
-            <div class="island-scene">
-              <div id="home-buddy-copy" class="penguin-home"></div>
-              <div class="dock"></div>
-              <div class="island-ground"></div>
-              <div class="sea-band"></div>
-            </div>
-            <div class="island-caption">
-              <p class="mini-label">つぎの もくひょう</p>
-              <h2>まなんで、つって、ずかんを うめよう</h2>
+            <div class="progress-summary">
+              <div><span>さんすう</span><strong id="summary-math">Lv 1</strong></div>
+              <div><span>ローマじ</span><strong id="summary-roma">Lv 1</strong></div>
+              <div><span>ずかん</span><strong id="summary-book">0/40</strong></div>
             </div>
           </section>
 
