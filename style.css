@@ -495,11 +495,44 @@ h2 {
 }
 
 .question-card {
+  position: relative;
   padding: 14px;
   border: 2px solid var(--line);
   border-radius: 8px;
   background: #fff;
   transform-origin: center top;
+}
+
+.answer-stamp {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 8;
+  display: grid;
+  place-items: center;
+  width: 132px;
+  height: 132px;
+  border: 9px solid currentColor;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.72);
+  font-size: 5.2rem;
+  font-weight: 900;
+  line-height: 1;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -50%) rotate(-9deg) scale(0.55);
+}
+
+.answer-stamp.is-ok {
+  color: #2fa66f;
+}
+
+.answer-stamp.is-ng {
+  color: #e35c54;
+}
+
+.answer-stamp.is-visible {
+  animation: stampPop 520ms ease-out both;
 }
 
 .question-text {
@@ -562,6 +595,19 @@ h2 {
 @keyframes questionPop {
   from { transform: translateY(-6px); opacity: 0.72; }
   to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes stampPop {
+  0% { opacity: 0; transform: translate(-50%, -50%) rotate(-14deg) scale(0.55); }
+  56% { opacity: 1; transform: translate(-50%, -50%) rotate(-9deg) scale(1.12); }
+  100% { opacity: 1; transform: translate(-50%, -50%) rotate(-9deg) scale(1); }
+}
+
+@keyframes levelToast {
+  0% { opacity: 0; transform: translate(-50%, -14px) scale(0.82); }
+  20% { opacity: 1; transform: translate(-50%, 0) scale(1.06); }
+  72% { opacity: 1; transform: translate(-50%, 0) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -8px) scale(0.96); }
 }
 
 .place-list,
@@ -1253,6 +1299,36 @@ h1 {
 .main-island,
 .quiz-panel {
   margin-top: 0;
+}
+
+.quiz-panel {
+  position: relative;
+}
+
+.level-toast {
+  position: absolute;
+  left: 50%;
+  top: 74px;
+  z-index: 12;
+  display: grid;
+  place-items: center;
+  min-width: 190px;
+  padding: 12px 24px;
+  border: 4px solid #fff;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #ffe46b, #ffbd4a);
+  color: #10527d;
+  font-size: 1.7rem;
+  font-weight: 900;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -12px) scale(0.86);
+  text-shadow: 0 2px 0 rgba(255, 255, 255, 0.8);
+  box-shadow: 0 12px 0 rgba(36, 52, 71, 0.12), 0 18px 26px rgba(36, 52, 71, 0.18);
+}
+
+.level-toast.is-visible {
+  animation: levelToast 1.05s ease-out both;
 }
 
 .stat-card.compact {

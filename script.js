@@ -373,18 +373,21 @@ function startQuiz() {
   selectedChoice = "";
   $("#feedback").textContent = "";
   $("#retry-level").hidden = true;
+  $("#retry-level").textContent = "もういちど";
   $("#next-question").hidden = true;
   $("#check-answer").hidden = false;
   $("#quiz-subject").textContent = selectedSubject === "math" ? "さんすう" : "ローマじ";
   $("#quiz-level").textContent = `Lv ${selectedLevel}`;
   renderLevelList();
   renderQuestion();
+  playLevelIntro();
 }
 
 function renderQuestion() {
   const question = quiz.questions[quiz.index];
   playServeAnimation();
   $("#quiz-score").textContent = `${quiz.correct}/5`;
+  hideAnswerStamp();
   $("#question-guide").textContent = question.guide;
   $("#question-text").textContent = question.prompt;
   renderServedPlate();
@@ -419,6 +422,15 @@ function renderQuestion() {
   renderSushiLane();
 }
 
+function playLevelIntro() {
+  const toast = $("#level-toast");
+  if (!toast) return;
+  toast.textContent = `レベル ${selectedLevel}`;
+  toast.classList.remove("is-visible");
+  void toast.offsetWidth;
+  toast.classList.add("is-visible");
+}
+
 function renderServedPlate() {
   const plate = $("#served-plate");
   if (!plate || !quiz) return;
@@ -443,11 +455,26 @@ function checkAnswer() {
   const ok = answers.some((answer) => normalize(rawAnswer) === normalize(answer));
   quiz.plates[quiz.index] = ok ? "done" : "miss";
   if (ok) quiz.correct += 1;
+  showAnswerStamp(ok);
   $("#feedback").textContent = ok ? "せいかい！おさら クリア！" : `おしい！こたえは ${question.answerDisplay || question.answer}`;
   $("#check-answer").hidden = true;
   $("#next-question").hidden = quiz.index >= QUESTIONS_PER_LEVEL - 1;
   renderSushiLane();
   if (quiz.index >= QUESTIONS_PER_LEVEL - 1) finishQuiz();
+}
+
+function showAnswerStamp(ok) {
+  const stamp = $("#answer-stamp");
+  if (!stamp) return;
+  stamp.textContent = ok ? "○" : "×";
+  stamp.className = `answer-stamp ${ok ? "is-ok" : "is-ng"} is-visible`;
+}
+
+function hideAnswerStamp() {
+  const stamp = $("#answer-stamp");
+  if (!stamp) return;
+  stamp.className = "answer-stamp";
+  stamp.textContent = "";
 }
 
 function nextQuestion() {
@@ -471,7 +498,7 @@ function handleLearnEnter(event) {
     return;
   }
   if (!$("#retry-level").hidden) {
-    startQuiz();
+    continueAfterQuiz();
   }
 }
 
@@ -483,6 +510,21 @@ function finishQuiz() {
   else finishRoma();
   persist();
   renderAll();
+  updateFinishButton();
+}
+
+function updateFinishButton() {
+  const nextUnlocked = quiz.correct === QUESTIONS_PER_LEVEL && quiz.level < MAX_LEVEL;
+  $("#retry-level").textContent = nextUnlocked ? "つぎのレベルへ" : "もういちど";
+}
+
+function continueAfterQuiz() {
+  if (quiz?.finished && quiz.correct === QUESTIONS_PER_LEVEL && quiz.level < MAX_LEVEL) {
+    selectedLevel = clampLevel(quiz.level + 1);
+    startQuiz();
+    return;
+  }
+  startQuiz();
 }
 
 function finishMath() {
@@ -603,11 +645,49 @@ function buildRomaQuestions(level) {
       guide: level <= 9 ? "おてほんを みて うってね" : "ローマじで いれてね",
       prompt,
       answer,
-      answers: aliases || [answer],
+      answers: buildRomajiAnswers(answer, aliases),
       answerDisplay: level <= 9 ? hint : answer,
       inputMode: "text",
     };
   });
+}
+
+function buildRomajiAnswers(answer, aliases = []) {
+  const seeds = [answer, ...aliases];
+  const rules = [
+    ["shi", "si"],
+    ["chi", "ti"],
+    ["tsu", "tu"],
+    ["fu", "hu"],
+    ["ji", "zi"],
+    ["sha", "sya"],
+    ["shu", "syu"],
+    ["sho", "syo"],
+    ["cha", "tya"],
+    ["chu", "tyu"],
+    ["cho", "tyo"],
+    ["ja", "zya"],
+    ["ju", "zyu"],
+    ["jo", "zyo"],
+  ];
+  const answers = new Set(seeds.map((item) => normalize(item)));
+  let changed = true;
+  while (changed && answers.size <= 128) {
+    changed = false;
+    for (const [from, to] of rules) {
+      for (const item of [...answers]) {
+        if (item.includes(from)) changed = addAnswerVariant(answers, item.replaceAll(from, to)) || changed;
+        if (item.includes(to)) changed = addAnswerVariant(answers, item.replaceAll(to, from)) || changed;
+      }
+    }
+  }
+  return [...answers];
+}
+
+function addAnswerVariant(answers, value) {
+  if (answers.has(value)) return false;
+  answers.add(value);
+  return true;
 }
 
 function goTo(view) {
@@ -733,7 +813,7 @@ function bindEvents() {
   }));
   $("#check-answer").addEventListener("click", checkAnswer);
   $("#next-question").addEventListener("click", nextQuestion);
-  $("#retry-level").addEventListener("click", startQuiz);
+  $("#retry-level").addEventListener("click", continueAfterQuiz);
   $("#fish-button").addEventListener("click", fishOnce);
   $("#reset-button").addEventListener("click", resetGame);
   $("#close-evolution").addEventListener("click", () => {
