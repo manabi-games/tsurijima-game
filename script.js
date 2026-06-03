@@ -383,9 +383,11 @@ function startQuiz() {
 
 function renderQuestion() {
   const question = quiz.questions[quiz.index];
+  playServeAnimation();
   $("#quiz-score").textContent = `${quiz.correct}/5`;
   $("#question-guide").textContent = question.guide;
   $("#question-text").textContent = question.prompt;
+  renderServedPlate();
   const area = $("#answer-area");
   area.innerHTML = "";
   selectedChoice = "";
@@ -415,6 +417,21 @@ function renderQuestion() {
     setTimeout(() => input.focus(), 0);
   }
   renderSushiLane();
+}
+
+function renderServedPlate() {
+  const plate = $("#served-plate");
+  if (!plate || !quiz) return;
+  plate.className = `served-plate ${plateClassByLevel(selectedLevel)}`;
+  plate.innerHTML = `<span>${quiz.index + 1}</span>`;
+}
+
+function playServeAnimation() {
+  const panel = $(".quiz-panel");
+  if (!panel) return;
+  panel.classList.remove("is-serving");
+  void panel.offsetWidth;
+  panel.classList.add("is-serving");
 }
 
 function checkAnswer() {

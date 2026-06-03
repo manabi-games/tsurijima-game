@@ -366,6 +366,113 @@ h2 {
     linear-gradient(90deg, #ff6b6b, #ffd166, #4ecdc4, #5b8def, #b76cff) border-box;
 }
 
+.sushi-master-stage {
+  position: relative;
+  min-height: 220px;
+  margin: 8px 0 0;
+  overflow: hidden;
+  border: 2px solid #bfe2e8;
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(255, 250, 228, 0.95) 0 48%, rgba(220, 243, 247, 0.9) 48% 100%),
+    repeating-linear-gradient(90deg, rgba(48, 148, 192, 0.14) 0 18px, transparent 18px 38px);
+  box-shadow: inset 0 -14px rgba(32, 122, 158, 0.12);
+}
+
+.sushi-master-stage::before {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 68px;
+  background:
+    linear-gradient(180deg, rgba(177, 112, 52, 0.92), rgba(137, 78, 34, 0.98)),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.16) 0 2px, transparent 2px 44px);
+  border-top: 4px solid rgba(255, 234, 171, 0.9);
+}
+
+.sushi-chef {
+  position: absolute;
+  left: 50%;
+  bottom: 18px;
+  z-index: 2;
+  width: min(250px, 42%);
+  max-height: 216px;
+  object-fit: contain;
+  transform: translateX(-50%);
+  filter: drop-shadow(0 12px 14px rgba(32, 52, 71, 0.18));
+  pointer-events: none;
+}
+
+.chef-counter {
+  position: absolute;
+  left: 50%;
+  bottom: 18px;
+  z-index: 3;
+  width: min(290px, 46%);
+  height: 92px;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.served-plate {
+  position: absolute;
+  left: 50%;
+  bottom: 5px;
+  width: 96px;
+  height: 58px;
+  display: grid;
+  place-items: center;
+  border: 5px solid #f5f5f5;
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: 0 10px 16px rgba(36, 52, 71, 0.18), inset 0 -8px rgba(36, 52, 71, 0.08);
+  color: var(--ink);
+  font-weight: 900;
+  transform: translate(-50%, 0);
+}
+
+.served-plate::before {
+  content: "";
+  position: absolute;
+  width: 58px;
+  height: 28px;
+  border-radius: 55% 55% 46% 46%;
+  background: linear-gradient(180deg, #ffb071, #ff6e5e);
+  transform: translateY(-4px);
+}
+
+.served-plate span {
+  position: relative;
+  z-index: 1;
+  min-width: 28px;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.9);
+  transform: translateY(17px);
+}
+
+.served-plate.blue { border-color: #70b7e8; }
+.served-plate.silver { border-color: #cbd4dc; background: linear-gradient(135deg, #fff, #dfe7ec); }
+.served-plate.gold { border-color: #f2c34b; background: #fff8da; }
+.served-plate.rainbow {
+  border-color: transparent;
+  background:
+    linear-gradient(#fff, #fff) padding-box,
+    linear-gradient(90deg, #ff6b6b, #ffd166, #4ecdc4, #5b8def, #b76cff) border-box;
+}
+
+.quiz-panel.is-serving .sushi-chef {
+  animation: chefServe 360ms ease-out both;
+}
+
+.quiz-panel.is-serving .served-plate {
+  animation: plateServe 360ms ease-out both;
+}
+
+.quiz-panel.is-serving .question-card {
+  animation: questionPop 280ms ease-out both;
+}
+
 .sushi-plate.done::after,
 .sushi-plate.miss::after {
   position: absolute;
@@ -392,6 +499,7 @@ h2 {
   border: 2px solid var(--line);
   border-radius: 8px;
   background: #fff;
+  transform-origin: center top;
 }
 
 .question-text {
@@ -439,6 +547,21 @@ h2 {
   min-height: 28px;
   margin: 10px 0 0;
   font-weight: 900;
+}
+
+@keyframes chefServe {
+  from { transform: translateX(-50%) translateY(8px) scale(0.98); }
+  to { transform: translateX(-50%) translateY(0) scale(1); }
+}
+
+@keyframes plateServe {
+  from { transform: translate(-50%, -18px) scale(0.84); opacity: 0.4; }
+  to { transform: translate(-50%, 0) scale(1); opacity: 1; }
+}
+
+@keyframes questionPop {
+  from { transform: translateY(-6px); opacity: 0.72; }
+  to { transform: translateY(0); opacity: 1; }
 }
 
 .place-list,
@@ -1787,6 +1910,30 @@ h1 {
 
   .learn-menu .level-list {
     grid-template-columns: repeat(4, 1fr);
+  }
+
+  .sushi-master-stage {
+    min-height: 184px;
+  }
+
+  .sushi-chef {
+    width: min(230px, 58%);
+    max-height: 178px;
+  }
+
+  .chef-counter {
+    width: min(240px, 58%);
+    height: 78px;
+  }
+
+  .served-plate {
+    width: 82px;
+    height: 50px;
+  }
+
+  .served-plate::before {
+    width: 50px;
+    height: 24px;
   }
 
   .main-island {
