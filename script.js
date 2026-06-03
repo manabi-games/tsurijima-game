@@ -422,10 +422,11 @@ function checkAnswer() {
   if (quiz.plates[quiz.index]) return;
   const question = quiz.questions[quiz.index];
   const rawAnswer = question.type === "choice" ? selectedChoice : $("#answer-input").value;
-  const ok = normalize(rawAnswer) === normalize(question.answer);
+  const answers = question.answers || [question.answer];
+  const ok = answers.some((answer) => normalize(rawAnswer) === normalize(answer));
   quiz.plates[quiz.index] = ok ? "done" : "miss";
   if (ok) quiz.correct += 1;
-  $("#feedback").textContent = ok ? "せいかい！おさら クリア！" : `おしい！こたえは ${question.answer}`;
+  $("#feedback").textContent = ok ? "せいかい！おさら クリア！" : `おしい！こたえは ${question.answerDisplay || question.answer}`;
   $("#check-answer").hidden = true;
   $("#next-question").hidden = quiz.index >= QUESTIONS_PER_LEVEL - 1;
   renderSushiLane();
@@ -563,36 +564,46 @@ function makeMathQuestion(level, i) {
 }
 
 const romaBank = [
-  [["あ", "a"], ["い", "i"], ["う", "u"], ["え", "e"], ["お", "o"]],
+  [["A", "a"], ["I", "i"], ["U", "u"], ["E", "e"], ["O", "o"]],
+  [["K", "k"], ["S", "s"], ["T", "t"], ["N", "n"], ["H", "h"]],
   [["か", "ka"], ["き", "ki"], ["く", "ku"], ["け", "ke"], ["こ", "ko"]],
   [["さ", "sa"], ["し", "shi"], ["す", "su"], ["せ", "se"], ["そ", "so"]],
   [["た", "ta"], ["ち", "chi"], ["つ", "tsu"], ["て", "te"], ["と", "to"]],
   [["な", "na"], ["に", "ni"], ["ぬ", "nu"], ["ね", "ne"], ["の", "no"]],
   [["は", "ha"], ["ひ", "hi"], ["ふ", "fu"], ["へ", "he"], ["ほ", "ho"]],
-  [["ま", "ma"], ["み", "mi"], ["む", "mu"], ["め", "me"], ["も", "mo"]],
-  [["やま", "yama"], ["ゆき", "yuki"], ["よる", "yoru"], ["そら", "sora"], ["うみ", "umi"]],
+  [["ま", "ma"], ["み", "mi"], ["や", "ya"], ["ら", "ra"], ["わ", "wa"]],
+  [["いぬ", "inu"], ["ねこ", "neko"], ["やま", "yama"], ["そら", "sora"], ["うみ", "umi"]],
+  [["か", "ka"], ["さ", "sa"], ["た", "ta"], ["な", "na"], ["は", "ha"]],
+  [["いぬ", "inu"], ["ねこ", "neko"], ["やま", "yama"], ["そら", "sora"], ["うみ", "umi"]],
+  [["さかな", "sakana"], ["みかん", "mikan"], ["くるま", "kuruma"], ["つみき", "tsumiki"], ["おはな", "ohana"]],
+  [["しゃしん", "shashin"], ["でんしゃ", "densha"], ["しゅくだい", "shukudai"], ["しょうがつ", "shougatsu"], ["おしゃれ", "oshare"]],
+  [["ちゃわん", "chawan"], ["おちゃ", "ocha"], ["ちゅうい", "chuui"], ["ちょきん", "chokin"], ["かぼちゃ", "kabocha"]],
+  [["きょう", "kyou"], ["きゅうり", "kyuuri"], ["りょうり", "ryouri"], ["ぎゅうにゅう", "gyuunyuu"], ["にゃんこ", "nyanko"]],
   [["らっぱ", "rappa"], ["きって", "kitte"], ["ねっこ", "nekko"], ["がっこう", "gakkou"], ["にっき", "nikki"]],
-  [["さかな", "sakana"], ["みかん", "mikan"], ["くるま", "kuruma"], ["つみき", "tsumiki"], ["おにぎり", "onigiri"]],
-  [["でんしゃ", "densha"], ["しゃしん", "shashin"], ["ちゃわん", "chawan"], ["じてんしゃ", "jitensha"], ["しゅくだい", "shukudai"]],
-  [["きょう", "kyou"], ["りょうり", "ryouri"], ["ぎゅうにゅう", "gyuunyuu"], ["しょうがつ", "shougatsu"], ["ちゅうしゃ", "chuusha"]],
-  [["あさごはん", "asagohan"], ["たからばこ", "takarabako"], ["ともだち", "tomodachi"], ["えんぴつ", "enpitsu"], ["すいとう", "suitou"]],
-  [["たんじょうび", "tanjoubi"], ["うんどうかい", "undoukai"], ["しょうがっこう", "shougakkou"], ["かいすいよく", "kaisuiyoku"], ["おとうさん", "otousan"]],
-  [["neko", "ねこ"], ["inu", "いぬ"], ["sora", "そら"], ["umi", "うみ"], ["hana", "はな"]],
-  [["sakana", "さかな"], ["kuruma", "くるま"], ["mikan", "みかん"], ["yakyuu", "やきゅう"], ["densha", "でんしゃ"]],
-  [["konnichiwa", "こんにちは"], ["arigatou", "ありがとう"], ["ohayou", "おはよう"], ["oyasumi", "おやすみ"], ["sayonara", "さよなら"]],
-  [["watashi", "わたし"], ["tomodachi", "ともだち"], ["benkyou", "べんきょう"], ["tsurizima", "つりじま"], ["pengin", "ペンギン"]],
-  [["kyouhaumiheiku", "きょうはうみへいく"], ["sakanaotsuru", "さかなをつる"], ["koindekau", "コインでかう"], ["sushiganagareru", "すしがながれる"], ["rainbowrod", "にじのつりざお"]],
-  [["manabitoshuri", "まなびとつり"], ["subetenoosara", "すべてのおさら"], ["maboroshinoshima", "まぼろしのしま"], ["koorinoking", "こおりのキング"], ["densetsunotsurimeijin", "でんせつのつりめいじん"]],
+  [["えんぴつ", "enpitsu"], ["しんぶん", "shinbun"], ["さんぽ", "sanpo"], ["ほんだな", "hondana"], ["せんせい", "sensei"]],
+  [["ともだち", "tomodachi"], ["たからばこ", "takarabako"], ["あさごはん", "asagohan"], ["すいとう", "suitou"], ["おとうさん", "otousan"]],
+  [["たんじょうび", "tanjoubi"], ["うんどうかい", "undoukai"], ["しょうがっこう", "shougakkou"], ["かいすいよく", "kaisuiyoku"], ["じてんしゃ", "jitensha"]],
+  [["ぱわーあっぷ", "pawaappu", ["pawaappu", "pawa-appu"]], ["ちゅうしゃき", "chuushaki"], ["きょうりゅう", "kyouryuu"], ["じゅんびたいそう", "junbitaisou"], ["でんせつのつりめいじん", "densetsunotsurimeijin"]],
 ];
 
 function buildRomaQuestions(level) {
-  return romaBank[level - 1].map(([prompt, answer]) => ({
-    type: "input",
-    guide: level >= 15 ? "よみかたを いれてね" : "ローマじで いれてね",
-    prompt,
-    answer,
-    inputMode: "text",
-  }));
+  return romaBank[level - 1].map(([kana, answer, aliases]) => {
+    const hint = `${answer.toUpperCase()} / ${answer.toLowerCase()}`;
+    const prompt = level <= 2
+      ? `${hint}\nを うってね`
+      : level <= 9
+        ? `${kana} を うってね\n${hint}`
+        : `${kana} を うってね`;
+    return {
+      type: "input",
+      guide: level <= 9 ? "おてほんを みて うってね" : "ローマじで いれてね",
+      prompt,
+      answer,
+      answers: aliases || [answer],
+      answerDisplay: level <= 9 ? hint : answer,
+      inputMode: "text",
+    };
+  });
 }
 
 function goTo(view) {

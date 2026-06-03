@@ -401,6 +401,7 @@ h2 {
   font-size: clamp(2rem, 8vw, 4rem);
   font-weight: 900;
   text-align: center;
+  white-space: pre-line;
 }
 
 .answer-area {
