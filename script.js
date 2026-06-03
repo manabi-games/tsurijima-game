@@ -509,59 +509,46 @@ function buildQuestions(subject, level) {
 }
 
 function buildMathQuestions(level) {
-  const questions = [];
-  for (let i = 0; i < QUESTIONS_PER_LEVEL; i += 1) {
-    questions.push(makeMathQuestion(level, i));
-  }
-  return questions;
+  return mathBank[level - 1].map((item) => makeMathQuestion(item));
 }
 
-function makeMathQuestion(level, i) {
-  const a = ((level * 3 + i * 4) % 9) + 1;
-  const b = ((level * 5 + i * 3) % 9) + 1;
-  let left = a;
-  let right = b;
-  let answer = a + b;
-  let sign = "+";
-
-  if (level <= 4) {
-    left = ((level + i * 2) % 8) + 1;
-    right = ((level + i) % Math.max(2, 10 - left)) + 1;
-    answer = left + right;
-  } else if (level <= 8) {
-    left = 10 + ((level * 2 + i * 3) % 10);
-    right = ((level + i * 4) % 9) + 1;
-    answer = left + right;
-  } else if (level <= 12) {
-    sign = "-";
-    right = ((level + i * 2) % 9) + 1;
-    answer = 6 + ((level * 3 + i * 5) % 14);
-    left = answer + right;
-  } else if (level <= 16) {
-    left = 20 + ((level * 4 + i * 7) % 50);
-    right = 10 + ((level * 5 + i * 4) % 30);
-    answer = left + right;
-  } else if (level <= 19) {
-    sign = "-";
-    right = 12 + ((level * 3 + i * 6) % 45);
-    answer = 20 + ((level * 5 + i * 7) % 60);
-    left = answer + right;
-  } else {
-    const patterns = [
-      [128, "+", 247],
-      [603, "-", 278],
-      [36, "+", 48, "+", 57],
-      [720, "-", 389],
-      [195, "+", 286],
-    ];
-    const p = patterns[i];
-    const prompt = p.length === 5 ? `${p[0]} ${p[1]} ${p[2]} ${p[3]} ${p[4]}` : `${p[0]} ${p[1]} ${p[2]}`;
-    const ans = p.length === 5 ? p[0] + p[2] + p[4] : p[1] === "+" ? p[0] + p[2] : p[0] - p[2];
-    return { type: "input", guide: "こたえを すうじで いれてね", prompt, answer: ans, inputMode: "numeric" };
+function makeMathQuestion(item) {
+  if (item.length === 1) {
+    return {
+      type: "input",
+      guide: "でてきた すうじを そのまま うってね",
+      prompt: String(item[0]),
+      answer: item[0],
+      inputMode: "numeric",
+    };
   }
-
+  const [left, sign, right] = item;
+  const answer = sign === "+" ? left + right : left - right;
   return { type: "input", guide: "こたえを すうじで いれてね", prompt: `${left} ${sign} ${right}`, answer, inputMode: "numeric" };
 }
+
+const mathBank = [
+  [[1], [2], [3], [4], [5]],
+  [[6], [7], [8], [9], [10]],
+  [[1, "+", 1], [2, "+", 1], [3, "+", 1], [4, "+", 1], [5, "+", 1]],
+  [[1, "+", 2], [2, "+", 2], [3, "+", 2], [4, "+", 2], [5, "+", 2]],
+  [[2, "+", 3], [4, "+", 1], [5, "+", 2], [6, "+", 3], [7, "+", 2]],
+  [[8, "+", 2], [7, "+", 3], [6, "+", 4], [5, "+", 5], [9, "+", 1]],
+  [[3, "-", 1], [4, "-", 1], [5, "-", 2], [6, "-", 2], [7, "-", 3]],
+  [[8, "-", 3], [9, "-", 4], [10, "-", 5], [7, "-", 5], [6, "-", 4]],
+  [[8, "+", 5], [9, "+", 4], [7, "+", 6], [6, "+", 8], [9, "+", 8]],
+  [[12, "+", 5], [14, "+", 3], [16, "+", 2], [11, "+", 8], [15, "+", 4]],
+  [[21, "+", 13], [32, "+", 14], [25, "+", 22], [41, "+", 18], [53, "+", 16]],
+  [[28, "+", 17], [36, "+", 25], [47, "+", 18], [59, "+", 24], [64, "+", 27]],
+  [[12, "-", 2], [14, "-", 3], [18, "-", 5], [19, "-", 7], [16, "-", 4]],
+  [[13, "-", 5], [15, "-", 7], [14, "-", 8], [16, "-", 9], [12, "-", 6]],
+  [[23, "+", 18], [34, "+", 27], [45, "+", 36], [56, "+", 28], [67, "+", 19]],
+  [[34, "-", 12], [48, "-", 23], [57, "-", 31], [69, "-", 24], [86, "-", 45]],
+  [[42, "-", 17], [53, "-", 28], [61, "-", 35], [74, "-", 46], [82, "-", 59]],
+  [[90, "-", 34], [81, "-", 27], [73, "-", 48], [65, "-", 39], [92, "-", 58]],
+  [[96, "-", 68], [84, "-", 57], [75, "-", 49], [63, "-", 38], [91, "-", 76]],
+  [[87, "-", 49], [92, "-", 58], [74, "-", 37], [81, "-", 46], [95, "-", 67]],
+];
 
 const romaBank = [
   [["A", "a"], ["I", "i"], ["U", "u"], ["E", "e"], ["O", "o"]],
