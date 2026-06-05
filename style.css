@@ -2030,7 +2030,7 @@ h1 {
 }
 
 .app.is-play-view .hero-main {
-  gap: 6px;
+  display: none;
 }
 
 .app.is-play-view .title-banner {
@@ -2054,50 +2054,130 @@ h1 {
 }
 
 .app.is-play-view .wallet {
-  margin: 6px 0;
+  display: none;
 }
 
 .app.is-play-view .panel {
-  margin-top: 8px;
-  padding: 12px;
+  margin-top: 6px;
+  padding: 10px;
+}
+
+.app.is-play-view .tabs {
+  top: 4px;
+  margin: 4px 0;
+  padding: 5px;
+}
+
+.app.is-play-view .tab {
+  min-height: 42px;
+}
+
+.app.is-play-view .learn-shell {
+  grid-template-columns: 250px minmax(0, 1fr);
+  gap: 8px;
 }
 
 .app.is-play-view .learn-menu {
-  top: 68px;
+  top: 60px;
 }
 
-.app.is-play-view .sushi-counter {
-  margin: 8px 0;
-  padding-bottom: 14px;
-}
-
-.app.is-play-view .sushi-master-stage {
-  min-height: 160px;
-}
-
-.app.is-play-view .sushi-chef {
-  width: min(210px, 38%);
-  max-height: 156px;
-}
-
-.app.is-play-view .chef-counter {
-  width: min(230px, 42%);
-  height: 68px;
-  bottom: 12px;
-}
-
-.app.is-play-view .served-plate {
-  width: 78px;
-  height: 46px;
-}
-
-.app.is-play-view .feedback {
-  min-height: 22px;
+.app.is-play-view .learn-menu .subject-tabs {
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px;
   margin-top: 6px;
 }
 
-.app.is-play-view .action-row {
+.app.is-play-view .learn-menu .level-list {
+  grid-template-columns: repeat(5, 1fr);
+  gap: 5px;
+}
+
+.app.is-play-view .subject-button,
+.app.is-play-view .level-button {
+  min-height: 38px;
+  padding: 6px;
+}
+
+.app.is-play-view .level-label {
   margin-top: 8px;
+}
+
+.app.is-play-view .quiz-top h2 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.app.is-play-view .sushi-counter {
+  margin: 6px 0;
+  padding: 8px;
+}
+
+.app.is-play-view .lane-light {
+  display: none;
+}
+
+.app.is-play-view .sushi-counter .sushi-lane {
+  padding: 8px;
+}
+
+.app.is-play-view .sushi-counter .sushi-plate {
+  min-height: 46px;
+}
+
+.app.is-play-view .sushi-counter .sushi-plate::before {
+  width: 44px;
+  height: 22px;
+}
+
+.app.is-play-view .sushi-master-stage {
+  min-height: 122px;
+  margin-top: 6px;
+}
+
+.app.is-play-view .sushi-chef {
+  width: min(170px, 34%);
+  max-height: 122px;
+}
+
+.app.is-play-view .chef-counter {
+  width: min(200px, 38%);
+  height: 52px;
+  bottom: 8px;
+}
+
+.app.is-play-view .served-plate {
+  width: 68px;
+  height: 40px;
+}
+
+.app.is-play-view .question-card {
+  padding: 10px;
+}
+
+.app.is-play-view .question-text {
+  min-height: 62px;
+  font-size: clamp(1.8rem, 5vw, 3.2rem);
+}
+
+.app.is-play-view .answer-area {
+  margin-top: 8px;
+}
+
+.app.is-play-view .answer-area input {
+  min-height: 46px;
+}
+
+.app.is-play-view .feedback {
+  min-height: 20px;
+  margin-top: 5px;
+}
+
+.app.is-play-view .action-row {
+  margin-top: 6px;
+}
+
+.app.is-play-view .action-row button {
+  min-height: 40px;
 }
 
 .app.is-play-view .water-scene {
