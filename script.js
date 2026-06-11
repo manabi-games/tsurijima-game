@@ -110,6 +110,8 @@ const defaultSave = () => ({
   fish: {},
   lastBuddyStage: "egg",
   endingSeen: false,
+  mathFinalCleared: false,
+  romaFinalCleared: false,
 });
 
 let save = loadSave();
@@ -201,9 +203,10 @@ function renderHome() {
   $("#summary-math").textContent = `Lv ${save.mathLevel}`;
   $("#summary-roma").textContent = `Lv ${save.romaLevel}`;
   $("#summary-book").textContent = `${caughtFishCount()}/${fishList.length}`;
-  $("#next-math-goal").textContent = save.mathLevel >= MAX_LEVEL ? "さんすう Lv20 とうたつ！" : `さんすう Lv${save.mathLevel} をクリア`;
-  $("#next-roma-goal").textContent = save.romaLevel >= MAX_LEVEL ? "ローマじ Lv20 とうたつ！" : `ローマじ Lv${save.romaLevel} をクリア`;
+  $("#next-math-goal").textContent = save.mathFinalCleared ? "さんすう ぜんぶクリア！" : `さんすう Lv${save.mathLevel} をクリア`;
+  $("#next-roma-goal").textContent = save.romaFinalCleared ? "ローマじ ぜんぶクリア！" : `ローマじ Lv${save.romaLevel} をクリア`;
   $("#next-book-goal").textContent = caughtFishCount() >= fishList.length ? "ずかん コンプリート！" : `あと ${fishList.length - caughtFishCount()}しゅるい`;
+  renderRewardBoard();
   const buddy = getBuddyStage();
   $("#buddy-name").textContent = buddy.name;
   renderPenguin($("#buddy-art"), buddy.id);
@@ -215,6 +218,44 @@ function renderHome() {
   if (activeRod) activeRod.src = rodAsset(save.equippedRod);
   const heroRod = $("#hero-rod-image");
   if (heroRod) heroRod.src = rodAsset(save.equippedRod);
+}
+
+function allStagesCleared() {
+  return save.mathFinalCleared && save.romaFinalCleared;
+}
+
+function fishBookCompleted() {
+  return caughtFishCount() >= fishList.length;
+}
+
+function renderRewardBoard() {
+  const board = $("#reward-board");
+  if (!board) return;
+  const rewards = [];
+  if (allStagesCleared()) {
+    rewards.push({
+      icon: "100",
+      title: "ぜんステージクリア おめでとう！",
+      text: "パパから おこづかい 100えんを もらえるよ！おさかなを ぜんしゅるい あつめると、もっと いいことが あるかもね！",
+    });
+  }
+  if (fishBookCompleted()) {
+    rewards.push({
+      icon: "500",
+      title: "おさかなずかん かんせい おめでとう！",
+      text: "パパから おこづかい 500えんを もらえるよ！おべんきょう がんばってね！",
+    });
+  }
+  board.hidden = rewards.length === 0;
+  board.innerHTML = rewards.map((reward) => `
+    <article class="reward-card">
+      <span>${reward.icon}えん</span>
+      <div>
+        <strong>${reward.title}</strong>
+        <p>${reward.text}</p>
+      </div>
+    </article>
+  `).join("");
 }
 
 function renderTabs() {
@@ -547,6 +588,7 @@ function finishMath() {
     const reward = mathReward(quiz.level);
     save.coins += reward;
     completedLevel("math", quiz.level);
+    if (quiz.level === MAX_LEVEL) save.mathFinalCleared = true;
     $("#feedback").textContent = `ぜんぶできた！${reward}コイン もらったよ。`;
     showClearModal("さんすう", quiz.level, `${reward}コイン もらったよ。`);
     const after = getBuddyStage().id;
@@ -566,6 +608,7 @@ function finishRoma() {
     const beforePlaces = unlockedPlaces().length;
     save.tickets += reward;
     completedLevel("roma", quiz.level);
+    if (quiz.level === MAX_LEVEL) save.romaFinalCleared = true;
     $("#feedback").textContent = `ぜんぶできた！チケット ${reward}まい もらったよ。`;
     showClearModal("ローマじ", quiz.level, `チケット ${reward}まい もらったよ。`);
     pendingPlaceUnlock = unlockedPlaces()[beforePlaces] || null;
