@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>まなびじまのつりぼうけん</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <main class="app">
+      <section class="hero" aria-labelledby="game-title">
+        <div class="hero__text">
+          <div class="title-logo">
+            <img src="./assets/ui/title_banner.png" alt="まなびじまの つりぼうけん" />
+            <h1 id="game-title">まなびじまの つりぼうけん</h1>
+          </div>
+        </div>
+        <div class="stage" aria-label="しゅじんこう">
+          <button class="stage-look-button" data-go="look">きせかえ</button>
+          <div class="sun"></div>
+          <div class="cloud cloud--one"></div>
+          <div class="cloud cloud--two"></div>
+          <div id="animal-buddy" class="buddy buddy--back-left"></div>
+          <div id="quiz-buddy" class="buddy buddy--back-center"></div>
+          <div id="world-buddy" class="buddy buddy--back-right"></div>
+          <div id="red-buddy" class="buddy buddy--left"></div>
+          <div id="avatar" class="avatar"></div>
+          <div id="buddy" class="buddy buddy--right"></div>
+          <div class="island"></div>
+          <div class="water"></div>
+        </div>
+      </section>
+
+      <section class="status-bar" aria-label="もちもの">
+        <div>
+          <span>つりけん</span>
+          <strong id="ticket-count">0</strong>
+        </div>
+        <div>
+          <span>えさのかけら</span>
+          <strong id="bait-count">0</strong>
+        </div>
+        <div>
+          <span>さかな</span>
+          <strong id="fish-count">0</strong>
+        </div>
+      </section>
+
+      <nav class="tabs" aria-label="メニュー">
+        <button class="tab is-active" data-view="home">ホーム</button>
+        <button class="tab" data-view="study">まなぶ</button>
+        <button class="tab" data-view="fish">つる</button>
+        <button class="tab" data-view="book">ずかん</button>
+      </nav>
+
+      <section id="home-view" class="view is-active">
+        <div class="progress-grid">
+          <article class="panel subject-card" data-home-subject="math" tabindex="0">
+            <span class="subject-icon">🧮</span>
+            <h2>さんすう</h2>
+            <p>いま <strong id="math-level">1</strong> れべる</p>
+            <div class="meter"><span id="math-meter"></span></div>
+          </article>
+          <article class="panel subject-card" data-home-subject="roma" tabindex="0">
+            <span class="subject-icon">⌨️</span>
+            <h2>ローマじ</h2>
+            <p>いま <strong id="roma-level">1</strong> れべる</p>
+            <div class="meter"><span id="roma-meter"></span></div>
+          </article>
+          <article class="panel subject-card" data-home-subject="word" tabindex="0">
+            <span class="subject-icon">🕒</span>
+            <h2>とけい</h2>
+            <p>いま <strong id="word-level">1</strong> れべる</p>
+            <div class="meter"><span id="word-meter"></span></div>
+          </article>
+          <article class="panel subject-card" data-home-subject="world" tabindex="0">
+            <span class="subject-icon">🌎</span>
+            <h2>えいご・せかい</h2>
+            <p>いま <strong id="world-level">1</strong> れべる</p>
+            <div class="meter"><span id="world-meter"></span></div>
+          </article>
+          <article class="panel subject-card" data-home-subject="animal" tabindex="0">
+            <span class="subject-icon">🦋</span>
+            <h2>いきもの</h2>
+            <p>いま <strong id="animal-level">1</strong> れべる</p>
+            <div class="meter"><span id="animal-meter"></span></div>
+          </article>
+          <article class="panel subject-card" data-home-subject="quiz" tabindex="0">
+            <span class="subject-icon">💡</span>
+            <h2>なぞなぞ</h2>
+            <p>いま <strong id="quiz-level">1</strong> れべる</p>
+            <div class="meter"><span id="quiz-meter"></span></div>
+          </article>
+        </div>
+        <div class="panel story-panel">
+          <h2>きょうのぼうけん</h2>
+          <p id="story-text">すきなもんだいをえらんで、ぜんぶせいかいをめざそう。</p>
+          <div class="home-actions">
+            <button class="primary" data-go="study">まなびにいく</button>
+            <button class="secondary" data-go="look">きせかえ</button>
+            <button class="danger reset-control">さいしょから</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="look-view" class="view">
+        <div class="panel look-panel">
+          <div class="look-head">
+            <div>
+              <p class="eyebrow">すがたえらび</p>
+              <h2>すきなすがた</h2>
+            </div>
+            <button id="look-auto" class="secondary">ぜんぶおまかせ</button>
+          </div>
+          <p class="look-help">できるようになったすがたからえらべるよ。</p>
+          <div id="look-picker" class="look-picker"></div>
+        </div>
+      </section>
+
+      <section id="study-view" class="view">
+        <div class="subject-picker" id="subject-picker"></div>
+        <div class="level-picker" id="level-picker" aria-label="れべるをえらぶ"></div>
+        <div class="panel quiz-panel" id="quiz-panel">
+          <div id="answer-mark" class="answer-mark" aria-hidden="true"></div>
+          <div class="quiz-head">
+            <div>
+              <p class="eyebrow" id="quiz-subtitle">さんすう</p>
+              <h2 id="quiz-title">れべる 1</h2>
+            </div>
+            <div class="score-pill"><span id="question-count">1</span>/5</div>
+          </div>
+          <p id="question-guide" class="question-guide">こたえを いれよう</p>
+          <div id="question-box" class="question-box"></div>
+          <div id="answer-box" class="answer-box"></div>
+          <div class="quiz-actions">
+            <button id="check-answer" class="primary">こたえる</button>
+            <button id="next-question" class="secondary" hidden>つぎへ</button>
+            <button id="retry-level" class="secondary" hidden>もういちど</button>
+            <button id="next-level" class="primary" hidden>つぎのれべる</button>
+            <button id="go-fishing" class="secondary" hidden>つりにいく</button>
+          </div>
+          <p id="feedback" class="feedback" aria-live="polite"></p>
+        </div>
+      </section>
+
+      <section id="fish-view" class="view">
+        <div class="panel fishing-panel">
+          <div class="fishing-stage" id="fishing-stage">
+            <div class="pond-sky"></div>
+            <div class="pond-water"></div>
+            <div class="rod"></div>
+            <div class="float"></div>
+          </div>
+          <div class="fishing-info">
+            <p class="eyebrow" id="place-name">はじまりのいけ</p>
+            <h2>つりをする</h2>
+            <p id="fishing-message">つりけんをつかって、さかなをつろう。</p>
+            <button id="fish-button" class="primary">つる</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="book-view" class="view">
+        <div class="panel">
+          <div class="book-head">
+            <div>
+              <p class="eyebrow">さかなずかん</p>
+              <h2>みつけたさかな</h2>
+            </div>
+            <button class="danger reset-control">さいしょから</button>
+          </div>
+          <div id="fish-book" class="fish-book"></div>
+        </div>
+      </section>
+    </main>
+
+    <div id="evolution-modal" class="evolution-modal" hidden>
+      <div class="evolution-card">
+        <p class="eyebrow">ぱわーあっぷ！</p>
+        <div class="evolution-stage">
+          <img id="evolution-before" alt="" />
+          <span>→</span>
+          <img id="evolution-after" alt="" />
+        </div>
+        <h2 id="evolution-title">すがたがかわった！</h2>
+        <p id="evolution-message">とてもつよくなったよ。</p>
+        <button id="close-evolution" class="primary">すすむ</button>
+      </div>
+    </div>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
