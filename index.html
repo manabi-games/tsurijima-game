@@ -262,43 +262,44 @@
 
     <script src="./script.js"></script>
   <!-- ▼▼ ゲームせんたくメニュー（まなびゲームズ そうごリンク） ▼▼ -->
-<div id="game-switcher">
-  <button id="gs-toggle" type="button" aria-label="ほかのゲームであそぶ">🎮</button>
-  <nav id="gs-menu" hidden>
-    <div class="gs-title">🎮 ゲームを えらぶ</div>
-    <span class="gs-item gs-now">🐧 ペンギンとふしぎなつりじま（いまここ）</span>
-    <a class="gs-item" href="https://manabi-games.github.io/tsurijima-game/manabijima/">🏝️ まなびじまのつりぼうけん</a>
-    <a class="gs-item" href="https://manabi-games.github.io/manabi-town/">🏘️ おべんきょコレクション</a>
-  </nav>
-</div>
 <style>
-#game-switcher { position: fixed; left: 12px; bottom: 12px; z-index: 99999; font-family: inherit; }
-#gs-toggle {
-  width: 52px; height: 52px; border-radius: 50%; border: none; cursor: pointer;
-  background: #fff; font-size: 1.5rem; box-shadow: 0 3px 10px rgba(0,0,0,.25);
+.gs-box {
+  margin: 18px auto 8px; padding: 12px; max-width: 420px;
+  background: rgba(255,255,255,.92); border-radius: 16px;
+  box-shadow: 0 3px 10px rgba(0,0,0,.15); text-align: center;
 }
-#gs-toggle:active { transform: scale(.94); }
-#gs-menu {
-  position: absolute; left: 0; bottom: 60px; width: max-content; max-width: 82vw;
-  background: #fff; border-radius: 16px; box-shadow: 0 6px 20px rgba(0,0,0,.25);
-  padding: 10px; display: flex; flex-direction: column; gap: 6px;
+.gs-box .gs-title { font-size: .85rem; color: #8d6e63; margin-bottom: 8px; font-weight: bold; }
+.gs-box .gs-links { display: flex; flex-direction: column; gap: 6px; }
+.gs-box .gs-item {
+  display: block; padding: 10px 12px; border-radius: 10px; text-decoration: none;
+  color: #4e342e; background: #f7f2ea; font-size: .92rem; font-weight: bold;
 }
-#gs-menu .gs-title { font-size: .85rem; color: #8d6e63; padding: 2px 6px; font-weight: bold; }
-#gs-menu .gs-item {
-  display: block; padding: 10px 14px; border-radius: 10px; text-decoration: none;
-  color: #4e342e; background: #f7f2ea; font-size: .95rem; font-weight: bold;
-}
-#gs-menu a.gs-item:hover { background: #ffe9c7; }
-#gs-menu .gs-now { background: #e8f5e9; color: #558b2f; }
+.gs-box .gs-item:hover { background: #ffe9c7; }
 </style>
 <script>
 (function () {
-  var t = document.getElementById("gs-toggle");
-  var m = document.getElementById("gs-menu");
-  t.addEventListener("click", function (e) { e.stopPropagation(); m.hidden = !m.hidden; });
-  document.addEventListener("click", function (e) {
-    if (!m.hidden && !m.contains(e.target)) m.hidden = true;
-  });
+  var GAMES = [
+    { id: "tsurijima",  label: "🐧 ペンギンとふしぎなつりじま", url: "https://manabi-games.github.io/tsurijima-game/" },
+    { id: "manabijima", label: "🏝️ まなびじまのつりぼうけん",   url: "https://manabi-games.github.io/tsurijima-game/manabijima/" },
+    { id: "town",       label: "🏘️ おべんきょコレクション",     url: "https://manabi-games.github.io/manabi-town/" }
+  ];
+  var CURRENT = "tsurijima";
+  function build() {
+    var home = document.getElementById("home-view");
+    if (!home || document.querySelector(".gs-box")) return;
+    var box = document.createElement("div");
+    box.className = "gs-box";
+    var html = '<div class="gs-title">🎮 ほかのゲームで あそぶ</div><div class="gs-links">';
+    GAMES.forEach(function (g) {
+      if (g.id === CURRENT) return;
+      html += '<a class="gs-item" href="' + g.url + '">' + g.label + "</a>";
+    });
+    html += "</div>";
+    box.innerHTML = html;
+    home.appendChild(box);
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", build);
+  else build();
 })();
 </script>
 <!-- ▲▲ ゲームせんたくメニュー ▲▲ -->
